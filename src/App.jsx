@@ -1,15 +1,18 @@
 import React, { useMemo, useState } from 'react';
 
+const FORM_ENDPOINT = 'https://formsubmit.co/REPLACE_WITH_YOUR_EMAIL';
+
 export default function KuidagoLandingPage() {
-  const deals = [
+  const initialDeals = [
     {
       id: 1,
       name: "Roma's Italian Restaurant",
       cuisine: 'Italian',
       zip: '75078',
       miles: 1.5,
+      city: 'Prosper',
       dealTitle: 'Free Drink with Any Pasta Lunch',
-      description: 'Includes classic pasta dishes like fettuccine alfredo or spaghetti with fresh ingredients.',
+      description: 'Classic pasta lunch dishes made with fresh ingredients.',
       discount: 'Free add-on value',
       window: '11:00 AM – 2:00 PM',
       scarcityLeft: 5,
@@ -23,8 +26,9 @@ export default function KuidagoLandingPage() {
       cuisine: 'Italian',
       zip: '75069',
       miles: 4.8,
+      city: 'McKinney',
       dealTitle: '15% Off Lunch Menu',
-      description: 'Authentic Italian dishes with traditional recipes in downtown McKinney.',
+      description: 'Traditional Italian lunch menu in downtown McKinney.',
       discount: '15% off',
       window: '11:30 AM – 2:30 PM',
       scarcityLeft: 6,
@@ -38,8 +42,9 @@ export default function KuidagoLandingPage() {
       cuisine: 'Italian',
       zip: '75078',
       miles: 2.2,
+      city: 'Prosper',
       dealTitle: 'Lunch Pasta + Salad Combo $12',
-      description: 'Classic Italian lunch combo with fresh pasta and side salad.',
+      description: 'Classic Italian lunch combo with pasta and side salad.',
       discount: 'Combo pricing',
       window: '11:00 AM – 2:00 PM',
       scarcityLeft: 7,
@@ -53,8 +58,9 @@ export default function KuidagoLandingPage() {
       cuisine: 'BBQ',
       zip: '75070',
       miles: 4.5,
+      city: 'McKinney',
       dealTitle: 'Free Dessert with BBQ Plate',
-      description: 'Includes famous brisket, ribs, and a complimentary dessert.',
+      description: 'Famous brisket, ribs, and a complimentary dessert.',
       discount: 'Free dessert',
       window: '11:00 AM – 3:00 PM',
       scarcityLeft: 8,
@@ -68,6 +74,7 @@ export default function KuidagoLandingPage() {
       cuisine: 'BBQ',
       zip: '75069',
       miles: 4.2,
+      city: 'McKinney',
       dealTitle: '10% Off Lunch Plates',
       description: 'Farm-to-table BBQ with responsibly sourced meats.',
       discount: '10% off',
@@ -83,6 +90,7 @@ export default function KuidagoLandingPage() {
       cuisine: 'BBQ',
       zip: '75009',
       miles: 1.8,
+      city: 'Celina',
       dealTitle: '2 Meat Plate + Drink $13.99',
       description: 'Scratch-made BBQ with sides included.',
       discount: 'Combo deal',
@@ -98,6 +106,7 @@ export default function KuidagoLandingPage() {
       cuisine: 'Mexican',
       zip: '75070',
       miles: 3.9,
+      city: 'McKinney',
       dealTitle: '$9 Burrito Lunch Special',
       description: 'Classic burritos and tacos with fast service.',
       discount: 'Low price special',
@@ -113,8 +122,9 @@ export default function KuidagoLandingPage() {
       cuisine: 'Tex-Mex',
       zip: '75078',
       miles: 2.6,
+      city: 'Prosper',
       dealTitle: 'Free Queso with Any Entree',
-      description: 'Bold Tex-Mex flavors with popular local following.',
+      description: 'Bold Tex-Mex flavors with a popular local following.',
       discount: 'Free appetizer',
       window: '11:00 AM – 3:00 PM',
       scarcityLeft: 5,
@@ -128,6 +138,7 @@ export default function KuidagoLandingPage() {
       cuisine: 'Thai',
       zip: '75070',
       miles: 4.1,
+      city: 'McKinney',
       dealTitle: 'Lunch Curry + Drink $11.99',
       description: 'Popular Thai curries and stir-fry dishes.',
       discount: 'Combo price',
@@ -143,6 +154,7 @@ export default function KuidagoLandingPage() {
       cuisine: 'American',
       zip: '75009',
       miles: 1.2,
+      city: 'Celina',
       dealTitle: 'Free Drink with Lunch Entree',
       description: 'Comfort food in a local Celina favorite spot.',
       discount: 'Free drink',
@@ -154,11 +166,26 @@ export default function KuidagoLandingPage() {
     },
   ];
 
-  const cuisines = ['All'].concat(Array.from(new Set(deals.map((d) => d.cuisine))));
+  const cuisines = ['All'].concat(Array.from(new Set(initialDeals.map((d) => d.cuisine))));
+  const [deals, setDeals] = useState(initialDeals);
   const [zipCode, setZipCode] = useState('75009');
   const [radius, setRadius] = useState(5);
   const [cuisine, setCuisine] = useState('All');
   const [redeemedDeal, setRedeemedDeal] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    restaurantName: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    city: '',
+    address: '',
+    cuisine: '',
+    offerIdea: '',
+    launchTiming: '',
+    agreement: false,
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   const filteredDeals = useMemo(() => {
     return deals.filter((deal) => {
@@ -167,49 +194,140 @@ export default function KuidagoLandingPage() {
       const matchCuisine = cuisine === 'All' || deal.cuisine === cuisine;
       return matchZip && matchRadius && matchCuisine;
     });
-  }, [zipCode, radius, cuisine]);
+  }, [deals, zipCode, radius, cuisine]);
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   function generateCode(deal) {
+    if (deal.scarcityLeft <= 0) return;
+
+    const nextLeft = deal.scarcityLeft - 1;
     const shortName = deal.name.split(' ').join('').slice(0, 4).toUpperCase();
-    const code = shortName + '-' + deal.id + '7' + deal.scarcityLeft;
-    setRedeemedDeal({ ...deal, code: code });
+    const code = shortName + '-' + deal.id + '7' + nextLeft;
+
+    setDeals((currentDeals) =>
+      currentDeals.map((item) =>
+        item.id === deal.id ? { ...item, scarcityLeft: Math.max(0, item.scarcityLeft - 1) } : item
+      )
+    );
+
+    setRedeemedDeal({ ...deal, scarcityLeft: nextLeft, code });
+  }
+
+  function handleFormChange(e) {
+    const { name, value, type, checked } = e.target;
+    setFormData((current) => ({
+      ...current,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const payload = new FormData();
+      payload.append('restaurantName', formData.restaurantName);
+      payload.append('contactName', formData.contactName);
+      payload.append('email', formData.email);
+      payload.append('phone', formData.phone);
+      payload.append('city', formData.city);
+      payload.append('address', formData.address);
+      payload.append('cuisine', formData.cuisine);
+      payload.append('offerIdea', formData.offerIdea);
+      payload.append('launchTiming', formData.launchTiming);
+      payload.append('agreement', String(formData.agreement));
+      payload.append('_subject', 'New Kuidago Early Partner Request');
+      payload.append('_captcha', 'false');
+      payload.append('_template', 'table');
+
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: payload,
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      alert('Form submission is not configured yet. Replace REPLACE_WITH_YOUR_EMAIL in src/App.jsx with the email where you want to receive submissions, then redeploy.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+          <div>
+            <p className="text-2xl font-semibold tracking-tight text-slate-900">Kuidago</p>
+            <p className="text-sm text-slate-500">Local food deals marketplace</p>
+          </div>
+          <div className="hidden gap-3 sm:flex">
+            <button
+              onClick={() => scrollToSection('marketplace')}
+              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              View Customer Experience
+            </button>
+            <button
+              onClick={() => scrollToSection('partner-form')}
+              className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700"
+            >
+              Join as Early Partner
+            </button>
+          </div>
+        </div>
+      </header>
+
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-orange-50 via-white to-white">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
               <div className="mb-4 inline-flex items-center rounded-full border border-orange-200 bg-white px-4 py-1 text-sm font-medium text-orange-700 shadow-sm">
-                Live local food deals marketplace demo
+                Live preview for Celina, Prosper, and McKinney
               </div>
               <h1 className="max-w-2xl text-5xl font-semibold tracking-tight text-slate-900 sm:text-6xl">
-                Kuidago helps people find nearby meal deals fast and helps restaurants fill slow hours.
+                Nearby food deals. Real restaurants. Live-style marketplace experience.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-                This version is built for restaurant outreach. It shows the actual customer experience, live filters, deal scarcity, and a redeem flow using demo data.
+                Browse by ZIP code, distance, and cuisine. Restaurants can launch limited-time offers and customers can redeem them instantly.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <button className="rounded-2xl bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5 hover:bg-orange-700">
-                  Request Restaurant Demo
-                </button>
-                <button className="rounded-2xl border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-800 transition hover:border-slate-400 hover:bg-slate-50">
+                <button
+                  onClick={() => scrollToSection('marketplace')}
+                  className="rounded-2xl bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5 hover:bg-orange-700"
+                >
                   View Customer Experience
+                </button>
+                <button
+                  onClick={() => scrollToSection('partner-form')}
+                  className="rounded-2xl border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
+                >
+                  Join as Early Partner
                 </button>
               </div>
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                  <p className="text-sm text-slate-500">Launch trigger</p>
+                  <p className="text-sm text-slate-500">Launch goal</p>
                   <p className="mt-1 text-lg font-semibold text-slate-900">First 10 restaurants</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                  <p className="text-sm text-slate-500">Coverage radius</p>
-                  <p className="mt-1 text-lg font-semibold text-slate-900">Default under 5 miles</p>
+                  <p className="text-sm text-slate-500">Search radius</p>
+                  <p className="mt-1 text-lg font-semibold text-slate-900">Up to 50 miles</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                  <p className="text-sm text-slate-500">Customer action</p>
-                  <p className="mt-1 text-lg font-semibold text-slate-900">Redeem code in app</p>
+                  <p className="text-sm text-slate-500">Redemption</p>
+                  <p className="mt-1 text-lg font-semibold text-slate-900">Live-style code flow</p>
                 </div>
               </div>
             </div>
@@ -218,15 +336,15 @@ export default function KuidagoLandingPage() {
               <div className="rounded-[28px] bg-slate-50 p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Restaurant-facing preview</p>
-                    <h3 className="text-xl font-semibold text-slate-900">What customers see right away</h3>
+                    <p className="text-sm font-medium text-slate-500">Marketplace preview</p>
+                    <h3 className="text-xl font-semibold text-slate-900">Top nearby deals</h3>
                   </div>
                   <div className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">
-                    Demo
+                    Demo live
                   </div>
                 </div>
                 <div className="space-y-3">
-                  {filteredDeals.slice(0, 3).map((deal) => (
+                  {deals.slice(0, 3).map((deal) => (
                     <div key={deal.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex gap-3">
@@ -236,7 +354,7 @@ export default function KuidagoLandingPage() {
                           <div>
                             <h4 className="text-base font-semibold text-slate-900">{deal.name}</h4>
                             <p className="mt-1 text-sm text-slate-600">{deal.dealTitle}</p>
-                            <p className="mt-1 text-xs text-slate-500">{deal.miles} mi · {deal.cuisine}</p>
+                            <p className="mt-1 text-xs text-slate-500">{deal.city} · {deal.miles} mi · {deal.cuisine}</p>
                           </div>
                         </div>
                         <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
@@ -252,15 +370,15 @@ export default function KuidagoLandingPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-white">
+      <section id="marketplace" className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
           <div className="mb-8 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Live customer experience demo</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Customer marketplace</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-              This is the page restaurant owners actually need to see.
+              Search local deals by ZIP code, radius, and cuisine.
             </h2>
             <p className="mt-4 text-lg text-slate-600">
-              Sending only a concept page is weaker. Sending a working-looking marketplace demo with their restaurant on it is much more convincing.
+              Showing deals near <span className="font-semibold text-slate-900">{zipCode || 'all ZIPs'}</span> within <span className="font-semibold text-slate-900">{radius} miles</span>.
             </p>
           </div>
 
@@ -283,9 +401,11 @@ export default function KuidagoLandingPage() {
                   onChange={(e) => setRadius(Number(e.target.value))}
                   className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-orange-400"
                 >
-                  <option value={3}>Under 3 miles</option>
                   <option value={5}>Under 5 miles</option>
                   <option value={10}>Under 10 miles</option>
+                  <option value={20}>Under 20 miles</option>
+                  <option value={30}>Under 30 miles</option>
+                  <option value={50}>Under 50 miles</option>
                 </select>
               </div>
 
@@ -329,7 +449,7 @@ export default function KuidagoLandingPage() {
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-sm text-slate-500">{deal.cuisine} · {deal.miles} miles away · ZIP {deal.zip}</p>
+                        <p className="mt-1 text-sm text-slate-500">{deal.city} · {deal.cuisine} · {deal.miles} miles away · ZIP {deal.zip}</p>
                         <p className="mt-3 text-lg font-semibold text-slate-900">{deal.dealTitle}</p>
                         <p className="mt-2 max-w-2xl text-slate-600">{deal.description}</p>
                         <div className="mt-4 flex flex-wrap gap-3 text-sm">
@@ -343,9 +463,10 @@ export default function KuidagoLandingPage() {
                     <div className="flex min-w-[180px] flex-col gap-3">
                       <button
                         onClick={() => generateCode(deal)}
-                        className="rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-100 transition hover:bg-orange-700"
+                        disabled={deal.scarcityLeft <= 0}
+                        className="rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-100 transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-slate-300"
                       >
-                        Redeem
+                        {deal.scarcityLeft > 0 ? 'Redeem' : 'Sold Out'}
                       </button>
                       <button className="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                         Save Deal
@@ -357,7 +478,7 @@ export default function KuidagoLandingPage() {
 
               {filteredDeals.length === 0 && (
                 <div className="rounded-[28px] border border-dashed border-slate-300 bg-white p-10 text-center">
-                  <p className="text-lg font-semibold text-slate-900">No deals match this demo filter.</p>
+                  <p className="text-lg font-semibold text-slate-900">No deals match this filter.</p>
                   <p className="mt-2 text-slate-600">Try another ZIP, larger radius, or a different cuisine.</p>
                 </div>
               )}
@@ -365,28 +486,28 @@ export default function KuidagoLandingPage() {
 
             <div className="space-y-6">
               <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Why this matters</p>
-                <h3 className="mt-3 text-2xl font-semibold text-slate-900">What restaurant owners need to understand fast</h3>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Live demo notes</p>
+                <h3 className="mt-3 text-2xl font-semibold text-slate-900">What this shows</h3>
                 <ul className="mt-5 space-y-4 text-slate-700">
-                  <li>They appear inside a real local marketplace, not just on a list.</li>
-                  <li>Customers can filter by ZIP code, distance, and cuisine.</li>
-                  <li>Deals create urgency with limited redemptions.</li>
-                  <li>Every offer can generate a redeem code shown at the restaurant.</li>
-                  <li>The first wave of partner restaurants gets visibility before public launch.</li>
+                  <li>Restaurants appear in a real local marketplace view.</li>
+                  <li>Customers can search by ZIP code and adjust radius up to 50 miles.</li>
+                  <li>Cuisine filtering helps narrow options fast.</li>
+                  <li>Redemptions reduce limited inventory one by one.</li>
+                  <li>Each offer produces a redeem code to show the restaurant.</li>
                 </ul>
               </div>
 
               <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Restaurant onboarding demo</p>
-                <h3 className="mt-3 text-2xl font-semibold text-slate-900">What each restaurant controls</h3>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">Restaurant controls</p>
+                <h3 className="mt-3 text-2xl font-semibold text-slate-900">What partners manage</h3>
                 <div className="mt-5 space-y-3">
                   {[
-                    'Deal title and description',
+                    'Offer title and description',
                     'Discount type or bundle special',
                     'Start and end time',
                     'Daily redemption cap',
-                    'Cuisine tag and coverage radius',
-                    'Pause or reactivate the deal instantly',
+                    'Cuisine category and visibility',
+                    'Pause or reactivate deals instantly',
                   ].map((item) => (
                     <div key={item} className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
                       {item}
@@ -425,23 +546,69 @@ export default function KuidagoLandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-20 text-center lg:px-8">
+      <section id="partner-form" className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
         <div className="rounded-[32px] bg-slate-900 px-8 py-14 text-white shadow-2xl shadow-slate-300">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Restaurant partner rollout</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Early partner agreement</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Join early, stand out locally, and go live as soon as the first market is ready.
+            Join early, stand out locally, and get featured in the first launch group.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
-            Restaurants that join the first launch group can be featured in Kuidago’s initial local rollout and customer awareness push.
+          <p className="mt-4 max-w-3xl text-lg text-slate-300">
+            Complete the form below to request an early partner listing. Submissions can be emailed directly to you once the destination email is set.
           </p>
-          <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <button className="rounded-2xl bg-orange-500 px-6 py-3 font-medium text-white transition hover:-translate-y-0.5 hover:bg-orange-600">
-              Become a Launch Partner
-            </button>
-            <button className="rounded-2xl border border-slate-600 px-6 py-3 font-medium text-white transition hover:bg-slate-800">
-              Schedule a Demo Call
-            </button>
-          </div>
+
+          {!submitted ? (
+            <form onSubmit={handleSubmit} className="mt-10 grid gap-4 sm:grid-cols-2">
+              <input name="restaurantName" value={formData.restaurantName} onChange={handleFormChange} required placeholder="Restaurant name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="contactName" value={formData.contactName} onChange={handleFormChange} required placeholder="Contact name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="email" type="email" value={formData.email} onChange={handleFormChange} required placeholder="Business email" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="phone" value={formData.phone} onChange={handleFormChange} required placeholder="Phone number" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="city" value={formData.city} onChange={handleFormChange} required placeholder="City" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="address" value={formData.address} onChange={handleFormChange} required placeholder="Address" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="cuisine" value={formData.cuisine} onChange={handleFormChange} placeholder="Cuisine type" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="launchTiming" value={formData.launchTiming} onChange={handleFormChange} placeholder="Preferred launch timing" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <textarea name="offerIdea" value={formData.offerIdea} onChange={handleFormChange} placeholder="Proposed deal or offer idea" className="sm:col-span-2 min-h-[120px] rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <label className="sm:col-span-2 flex items-start gap-3 rounded-2xl border border-slate-700 bg-slate-800 px-4 py-4 text-sm text-slate-300">
+                <input name="agreement" type="checkbox" checked={formData.agreement} onChange={handleFormChange} required className="mt-1" />
+                <span>
+                  I confirm I am authorized to submit this restaurant for early partner review and understand this request may be contacted by email for activation.
+                </span>
+              </label>
+              <div className="sm:col-span-2 flex flex-col gap-4 sm:flex-row">
+                <button type="submit" disabled={submitting} className="rounded-2xl bg-orange-500 px-6 py-3 font-medium text-white transition hover:-translate-y-0.5 hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-500">
+                  {submitting ? 'Submitting...' : 'Submit Early Partner Request'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('marketplace')}
+                  className="rounded-2xl border border-slate-600 px-6 py-3 font-medium text-white transition hover:bg-slate-800"
+                >
+                  Back to Customer Experience
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="mt-10 rounded-[28px] border border-slate-700 bg-slate-800 p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Request received</p>
+              <h3 className="mt-3 text-2xl font-semibold text-white">Thank you, {formData.contactName || formData.restaurantName}.</h3>
+              <p className="mt-4 max-w-2xl text-slate-300">
+                Your early partner request has been submitted. Once your email destination is configured, every form submission will arrive in your inbox automatically.
+              </p>
+              <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+                <button
+                  onClick={() => scrollToSection('marketplace')}
+                  className="rounded-2xl bg-orange-500 px-6 py-3 font-medium text-white hover:bg-orange-600"
+                >
+                  View Marketplace Again
+                </button>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="rounded-2xl border border-slate-600 px-6 py-3 font-medium text-white hover:bg-slate-700"
+                >
+                  Edit Submission
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -463,12 +630,13 @@ export default function KuidagoLandingPage() {
             <div className="mt-6 rounded-3xl bg-orange-50 p-6 text-center">
               <p className="text-sm text-orange-700">Show this code to the restaurant</p>
               <p className="mt-3 text-3xl font-bold tracking-[0.2em] text-slate-900">{redeemedDeal.code}</p>
-              <p className="mt-3 text-sm text-slate-600">Demo-only flow for restaurant outreach and proof of concept.</p>
+              <p className="mt-3 text-sm text-slate-600">This demo code is generated at the moment of redemption.</p>
             </div>
             <div className="mt-6 rounded-2xl border border-slate-200 p-4 text-left">
               <p className="text-sm text-slate-500">Offer</p>
               <p className="mt-1 font-semibold text-slate-900">{redeemedDeal.dealTitle}</p>
               <p className="mt-2 text-sm text-slate-600">Valid during {redeemedDeal.window}</p>
+              <p className="mt-2 text-sm font-medium text-red-600">Remaining now: {redeemedDeal.scarcityLeft}/{redeemedDeal.scarcityTotal}</p>
             </div>
           </div>
         </div>

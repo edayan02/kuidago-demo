@@ -1,30 +1,32 @@
-# Kuidago Vercel Ready
+# Kuidago V2
 
-## Fastest way to get this live
+## What changed
+- Radius now goes up to 50 miles
+- Redeem reduces scarcity each time
+- View Customer Experience and Join as Early Partner now scroll to live sections
+- Early partner form is wired for email submission using FormSubmit
 
-### Option A: GitHub + Vercel
-1. Download and unzip this folder.
-2. Create a new GitHub repository named `kuidago-demo`.
-3. Upload all files from this folder into that repo.
-4. In Vercel, click **Add New Project**.
-5. Import the GitHub repo.
-6. Click **Deploy**.
+## Required step before it works
+Open `src/App.jsx` and replace:
 
-Vercel should detect Vite automatically.
-
-### Option B: Run locally first
-Open Terminal / Command Prompt inside the folder and run:
-
-```bash
-npm install
-npm run dev
+```js
+const FORM_ENDPOINT = 'https://formsubmit.co/REPLACE_WITH_YOUR_EMAIL';
 ```
 
-### If you want to change restaurant data
-Open:
+with your real email, for example:
 
-```bash
-src/App.jsx
+```js
+const FORM_ENDPOINT = 'https://formsubmit.co/hello@kuidago.com';
 ```
 
-Then edit the `const deals = [...]` section at the top.
+or
+
+```js
+const FORM_ENDPOINT = 'https://formsubmit.co/yourgmail@gmail.com';
+```
+
+Then push to GitHub and Vercel will redeploy.
+
+## Notes
+- The first submission to FormSubmit may require email confirmation from their service.
+- After confirming, submissions will be emailed to you.
