@@ -1,32 +1,16 @@
-# Kuidago V2
+# Kuidago V3
 
 ## What changed
-- Radius now goes up to 50 miles
-- Redeem reduces scarcity each time
-- View Customer Experience and Join as Early Partner now scroll to live sections
-- Early partner form is wired for email submission using FormSubmit
+- split into partner page and customer app view
+- customer side is more mobile-first
+- coupon-style deal cards
+- favorites with heart save behavior
+- cuisine filter chips
+- phone number on each card
 
-## Required step before it works
-Open `src/App.jsx` and replace:
-
-```js
-const FORM_ENDPOINT = 'https://formsubmit.co/REPLACE_WITH_YOUR_EMAIL';
-```
-
-with your real email, for example:
-
-```js
-const FORM_ENDPOINT = 'https://formsubmit.co/hello@kuidago.com';
-```
-
-or
-
-```js
-const FORM_ENDPOINT = 'https://formsubmit.co/yourgmail@gmail.com';
-```
-
-Then push to GitHub and Vercel will redeploy.
-
-## Notes
-- The first submission to FormSubmit may require email confirmation from their service.
-- After confirming, submissions will be emailed to you.
+## Update flow
+1. Download and unzip this package
+2. Replace the contents of your local GitHub Desktop repo with these files
+3. Commit
+4. Push
+5. Vercel auto-redeploys
