@@ -19,9 +19,6 @@ function AppStoreFrame({ children }) {
 function DealCouponCard({ deal, isFavorite, onToggleFavorite, onRedeem }) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="absolute -right-8 top-5 h-16 w-16 rounded-full border border-dashed border-slate-200 bg-slate-50" />
-      <div className="absolute -left-8 top-5 h-16 w-16 rounded-full border border-dashed border-slate-200 bg-slate-50" />
-
       <div className="flex items-start gap-3">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-3xl">
           {deal.image}
@@ -51,6 +48,10 @@ function DealCouponCard({ deal, isFavorite, onToggleFavorite, onRedeem }) {
           <div className="mt-3 flex items-center justify-between gap-3">
             <div>
               <p className="text-lg font-bold tracking-tight text-slate-900">{deal.dealTitle}</p>
+              <div className="mt-1 flex items-center gap-2 text-sm">
+                <span className="text-slate-400 line-through">{deal.originalPrice}</span>
+                <span className="font-bold text-emerald-700">{deal.salePrice}</span>
+              </div>
               <p className="mt-1 text-xs text-slate-500">{deal.window}</p>
             </div>
             <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-right text-xs font-semibold text-emerald-700">
@@ -85,8 +86,9 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
 
   const filteredDeals = useMemo(() => {
     return deals.filter((deal) => {
-      const matchZip = zipCode.trim() === '' || deal.zip === zipCode.trim();
-      const matchRadius = deal.miles <= radius;
+      const hasZip = zipCode.trim() !== '';
+      const matchZip = !hasZip || deal.zip === zipCode.trim();
+      const matchRadius = !hasZip || deal.miles <= radius;
       const matchCuisine = cuisine === 'All' || deal.cuisine === cuisine;
       const matchFavorite = !showFavoritesOnly || favorites.includes(deal.id);
       return matchZip && matchRadius && matchCuisine && matchFavorite;
@@ -151,7 +153,7 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
           <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-orange-50 px-4 py-3">
             <div>
               <p className="text-sm font-semibold text-slate-900">{filteredDeals.length} deals found</p>
-              <p className="text-xs text-slate-500">Showing results near {zipCode || 'all ZIPs'} within {radius} miles</p>
+              <p className="text-xs text-slate-500">{zipCode.trim() === '' ? 'Showing all available deals in the system' : `Showing results near ${zipCode} within ${radius} miles`}</p>
             </div>
             <button
               onClick={() => setShowFavoritesOnly((v) => !v)}
@@ -176,7 +178,7 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
           {filteredDeals.length === 0 && (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
               <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
-              <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine.</p>
+              <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine. If no ZIP is entered, all deals in the system are shown.</p>
             </div>
           )}
         </div>
@@ -379,24 +381,24 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 
 export default function KuidagoLandingPage() {
   const initialDeals = [
-    { id: 1, name: "Roma's Italian Restaurant", cuisine: 'Italian', zip: '75078', miles: 1.5, city: 'Prosper', phone: '(469) 555-1101', dealTitle: 'Free Drink with Any Pasta Lunch', description: 'Classic pasta lunch dishes made with fresh ingredients.', discount: 'Free add-on value', window: '11:00 AM – 2:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🍝', featured: true },
-    { id: 2, name: 'Fontina Ristorante', cuisine: 'Italian', zip: '75069', miles: 4.8, city: 'McKinney', phone: '(469) 555-1102', dealTitle: '15% Off Lunch Menu', description: 'Traditional Italian lunch menu in downtown McKinney.', discount: '15% off', window: '11:30 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 20, image: '🍷', featured: false },
-    { id: 3, name: 'Salute Italian Restaurant', cuisine: 'Italian', zip: '75078', miles: 2.2, city: 'Prosper', phone: '(469) 555-1103', dealTitle: 'Lunch Pasta + Salad Combo $12', description: 'Classic Italian lunch combo with pasta and side salad.', discount: 'Combo pricing', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍕', featured: false },
-    { id: 4, name: 'Hutchins BBQ', cuisine: 'BBQ', zip: '75070', miles: 4.5, city: 'McKinney', phone: '(469) 555-1104', dealTitle: 'Free Dessert with BBQ Plate', description: 'Famous brisket, ribs, and a complimentary dessert.', discount: 'Free dessert', window: '11:00 AM – 3:00 PM', scarcityLeft: 8, scarcityTotal: 25, image: '🍖', featured: true },
-    { id: 5, name: 'Local Yocal BBQ & Grill', cuisine: 'BBQ', zip: '75069', miles: 4.2, city: 'McKinney', phone: '(469) 555-1105', dealTitle: '10% Off Lunch Plates', description: 'Farm-to-table BBQ with responsibly sourced meats.', discount: '10% off', window: '11:00 AM – 2:00 PM', scarcityLeft: 6, scarcityTotal: 14, image: '🔥', featured: false },
-    { id: 6, name: 'Tender Smokehouse', cuisine: 'BBQ', zip: '75009', miles: 1.8, city: 'Celina', phone: '(469) 555-1106', dealTitle: '2 Meat Plate + Drink $13.99', description: 'Scratch-made BBQ with sides included.', discount: 'Combo deal', window: '11:00 AM – 2:30 PM', scarcityLeft: 4, scarcityTotal: 12, image: '🍗', featured: true },
-    { id: 7, name: "Cookie's Mexican Food", cuisine: 'Mexican', zip: '75070', miles: 3.9, city: 'McKinney', phone: '(469) 555-1107', dealTitle: '$9 Burrito Lunch Special', description: 'Classic burritos and tacos with fast service.', discount: 'Low price special', window: '10:30 AM – 2:00 PM', scarcityLeft: 9, scarcityTotal: 20, image: '🌯', featured: false },
-    { id: 8, name: 'Mi Luna Tex-Mex', cuisine: 'Tex-Mex', zip: '75078', miles: 2.6, city: 'Prosper', phone: '(469) 555-1108', dealTitle: 'Free Queso with Any Entree', description: 'Bold Tex-Mex flavors with a popular local following.', discount: 'Free appetizer', window: '11:00 AM – 3:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🧀', featured: false },
-    { id: 9, name: 'Spoon + Fork Thai Kitchen', cuisine: 'Thai', zip: '75070', miles: 4.1, city: 'McKinney', phone: '(469) 555-1109', dealTitle: 'Lunch Curry + Drink $11.99', description: 'Popular Thai curries and stir-fry dishes.', discount: 'Combo price', window: '11:00 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 16, image: '🍜', featured: false },
-    { id: 10, name: "Lucy's on the Square", cuisine: 'American', zip: '75009', miles: 1.2, city: 'Celina', phone: '(469) 555-1110', dealTitle: 'Free Drink with Lunch Entree', description: 'Comfort food in a local Celina favorite spot.', discount: 'Free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍽️', featured: true },
+    { id: 1, name: "Roma's Italian Restaurant", cuisine: 'Italian', zip: '75078', miles: 1.5, city: 'Prosper', phone: '(469) 555-1101', dealTitle: 'Free Drink with Any Pasta Lunch', description: 'Classic pasta lunch dishes made with fresh ingredients.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Save $4 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🍝', featured: true },
+    { id: 2, name: 'Fontina Ristorante', cuisine: 'Italian', zip: '75069', miles: 4.8, city: 'McKinney', phone: '(469) 555-1102', dealTitle: '15% Off Lunch Menu', description: 'Traditional Italian lunch menu in downtown McKinney.', originalPrice: '$18.00', salePrice: '$15.30', discount: '15% off', window: '11:30 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 20, image: '🍷', featured: false },
+    { id: 3, name: 'Salute Italian Restaurant', cuisine: 'Italian', zip: '75078', miles: 2.2, city: 'Prosper', phone: '(469) 555-1103', dealTitle: 'Lunch Pasta + Salad Combo $12', description: 'Classic Italian lunch combo with pasta and side salad.', originalPrice: '$16.00', salePrice: '$12.00', discount: 'Combo pricing', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍕', featured: false },
+    { id: 4, name: 'Hutchins BBQ', cuisine: 'BBQ', zip: '75070', miles: 4.5, city: 'McKinney', phone: '(469) 555-1104', dealTitle: 'Free Dessert with BBQ Plate', description: 'Famous brisket, ribs, and a complimentary dessert.', originalPrice: '$19.99', salePrice: '$19.99', discount: 'Free dessert', window: '11:00 AM – 3:00 PM', scarcityLeft: 8, scarcityTotal: 25, image: '🍖', featured: true },
+    { id: 5, name: 'Local Yocal BBQ & Grill', cuisine: 'BBQ', zip: '75069', miles: 4.2, city: 'McKinney', phone: '(469) 555-1105', dealTitle: '10% Off Lunch Plates', description: 'Farm-to-table BBQ with responsibly sourced meats.', originalPrice: '$20.00', salePrice: '$18.00', discount: '10% off', window: '11:00 AM – 2:00 PM', scarcityLeft: 6, scarcityTotal: 14, image: '🔥', featured: false },
+    { id: 6, name: 'Tender Smokehouse', cuisine: 'BBQ', zip: '75009', miles: 1.8, city: 'Celina', phone: '(469) 555-1106', dealTitle: '2 Meat Plate + Drink $13.99', description: 'Scratch-made BBQ with sides included.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Combo deal', window: '11:00 AM – 2:30 PM', scarcityLeft: 4, scarcityTotal: 12, image: '🍗', featured: true },
+    { id: 7, name: "Cookie's Mexican Food", cuisine: 'Mexican', zip: '75070', miles: 3.9, city: 'McKinney', phone: '(469) 555-1107', dealTitle: '$9 Burrito Lunch Special', description: 'Classic burritos and tacos with fast service.', originalPrice: '$12.50', salePrice: '$9.00', discount: 'Save $3.50', window: '10:30 AM – 2:00 PM', scarcityLeft: 9, scarcityTotal: 20, image: '🌯', featured: false },
+    { id: 8, name: 'Mi Luna Tex-Mex', cuisine: 'Tex-Mex', zip: '75078', miles: 2.6, city: 'Prosper', phone: '(469) 555-1108', dealTitle: 'Free Queso with Any Entree', description: 'Bold Tex-Mex flavors with a popular local following.', originalPrice: '$15.99', salePrice: '$15.99', discount: 'Free appetizer', window: '11:00 AM – 3:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🧀', featured: false },
+    { id: 9, name: 'Spoon + Fork Thai Kitchen', cuisine: 'Thai', zip: '75070', miles: 4.1, city: 'McKinney', phone: '(469) 555-1109', dealTitle: 'Lunch Curry + Drink $11.99', description: 'Popular Thai curries and stir-fry dishes.', originalPrice: '$15.99', salePrice: '$11.99', discount: 'Save $4', window: '11:00 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 16, image: '🍜', featured: false },
+    { id: 10, name: "Lucy's on the Square", cuisine: 'American', zip: '75009', miles: 1.2, city: 'Celina', phone: '(469) 555-1110', dealTitle: 'Free Drink with Lunch Entree', description: 'Comfort food in a local Celina favorite spot.', originalPrice: '$14.99', salePrice: '$12.99', discount: 'Save $2 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍽️', featured: true },
   ];
 
   const [page, setPage] = useState('partner');
   const [deals, setDeals] = useState(initialDeals);
-  const [zipCode, setZipCode] = useState('75009');
+  const [zipCode, setZipCode] = useState('');
   const [radius, setRadius] = useState(5);
   const [cuisine, setCuisine] = useState('All');
-  const [favorites, setFavorites] = useState([6, 10]);
+  const [favorites, setFavorites] = useState([]);
   const [redeemedDeal, setRedeemedDeal] = useState(null);
 
   function onToggleFavorite(id) {

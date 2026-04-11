@@ -1,12 +1,11 @@
-# Kuidago V3
+# Kuidago V4
 
 ## What changed
-- split into partner page and customer app view
-- customer side is more mobile-first
-- coupon-style deal cards
-- favorites with heart save behavior
-- cuisine filter chips
-- phone number on each card
+- ZIP now defaults to blank
+- blank ZIP shows all deals
+- favorites start empty
+- original price + sale price added to cards
+- removed coupon side circles
 
 ## Update flow
 1. Download and unzip this package
