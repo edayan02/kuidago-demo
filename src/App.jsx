@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mjgjbwba';
+
 function AppStoreFrame({ children }) {
   return (
     <div className="mx-auto w-full max-w-[430px] rounded-[34px] border border-slate-200 bg-white shadow-2xl shadow-slate-200">
@@ -178,7 +180,7 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
           {filteredDeals.length === 0 && (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
               <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
-              <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine. If no ZIP is entered, all deals in the system are shown.</p>
+              <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine.</p>
             </div>
           )}
         </div>
@@ -201,6 +203,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
     agreement: false,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   function handleFormChange(e) {
     const { name, value, type, checked } = e.target;
@@ -210,9 +213,44 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      const payload = new FormData();
+      payload.append('restaurantName', formData.restaurantName);
+      payload.append('contactName', formData.contactName);
+      payload.append('email', formData.email);
+      payload.append('phone', formData.phone);
+      payload.append('city', formData.city);
+      payload.append('address', formData.address);
+      payload.append('cuisine', formData.cuisine);
+      payload.append('offerIdea', formData.offerIdea);
+      payload.append('launchTiming', formData.launchTiming);
+      payload.append('agreement', String(formData.agreement));
+      payload.append('_subject', 'New Kuidago Early Partner Request');
+      payload.append('_captcha', 'false');
+      payload.append('_template', 'table');
+
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        body: payload,
+      });
+
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      alert('There was a problem sending the request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -339,11 +377,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
           </p>
 
           {!submitted ? (
-            <form
-  action="https://formspree.io/f/mjgjbwba"
-  method="POST"
-  className="mt-10 grid gap-4 sm:grid-cols-2"
->
+            <form onSubmit={handleSubmit} className="mt-10 grid gap-4 sm:grid-cols-2">
               <input name="restaurantName" value={formData.restaurantName} onChange={handleFormChange} required placeholder="Restaurant name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
               <input name="contactName" value={formData.contactName} onChange={handleFormChange} required placeholder="Contact name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
               <input name="email" type="email" value={formData.email} onChange={handleFormChange} required placeholder="Business email" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
@@ -358,8 +392,8 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
                 <span>I confirm I am authorized to submit this restaurant for early partner review and activation.</span>
               </label>
               <div className="sm:col-span-2 flex flex-col gap-4 sm:flex-row">
-                <button type="submit" className="rounded-2xl bg-orange-500 px-6 py-3 font-medium text-white transition hover:-translate-y-0.5 hover:bg-orange-600">
-                  Submit Early Partner Request
+                <button type="submit" disabled={submitting} className="rounded-2xl bg-orange-500 px-6 py-3 font-medium text-white transition hover:-translate-y-0.5 hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-500">
+                  {submitting ? 'Submitting...' : 'Submit Early Partner Request'}
                 </button>
                 <button
                   type="button"
@@ -374,7 +408,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             <div className="mt-10 rounded-[28px] border border-slate-700 bg-slate-800 p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Request received</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">Thank you, {formData.contactName || formData.restaurantName}.</h3>
-              <p className="mt-4 max-w-2xl text-slate-300">Your early partner request has been captured in this demo flow.</p>
+              <p className="mt-4 max-w-2xl text-slate-300">Your early partner request has been sent successfully. The Kuidago team will receive it by email at kuidago.co@gmail.com and can follow up directly.</p>
             </div>
           )}
         </div>
@@ -399,7 +433,7 @@ export default function KuidagoLandingPage() {
 
   const [page, setPage] = useState('partner');
   const [deals, setDeals] = useState(initialDeals);
-  const [zipCode, setZipCode] = useState('');
+  const [zipCode, setZipCode] = useState('75009');
   const [radius, setRadius] = useState(5);
   const [cuisine, setCuisine] = useState('All');
   const [favorites, setFavorites] = useState([]);
