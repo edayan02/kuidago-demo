@@ -339,7 +339,11 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
           </p>
 
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="mt-10 grid gap-4 sm:grid-cols-2">
+            <form
+  action="https://formspree.io/f/mjgjbwba"
+  method="POST"
+  className="mt-10 grid gap-4 sm:grid-cols-2"
+>
               <input name="restaurantName" value={formData.restaurantName} onChange={handleFormChange} required placeholder="Restaurant name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
               <input name="contactName" value={formData.contactName} onChange={handleFormChange} required placeholder="Contact name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
               <input name="email" type="email" value={formData.email} onChange={handleFormChange} required placeholder="Business email" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
