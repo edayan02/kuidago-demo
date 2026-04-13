@@ -485,7 +485,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                { label: 'Initial launch', value: 'First 20 restaurants' },
+                { label: 'Initial launch', value: 'First 10 restaurants' },
                 { label: 'Customer filters', value: 'ZIP · Radius · Cuisine' },
                 { label: 'Offer style', value: 'Limited-time local deals' },
               ].map((item) => (
@@ -587,7 +587,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             <div className="relative rounded-3xl border-2 border-orange-400 bg-white p-8 shadow-md">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                 <span className="rounded-full bg-orange-500 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow">
-                  Current — First 20 restaurants
+                  Current — First 10 restaurants
                 </span>
               </div>
               <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-orange-600">Launch period</p>
