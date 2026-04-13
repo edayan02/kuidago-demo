@@ -7,6 +7,202 @@ function googleMapsUrl(address, city) {
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
 }
 
+// ============================================================
+// RESTAURANT DATA — update addresses here with real addresses
+// ============================================================
+const INITIAL_DEALS = [
+  {
+    id: 1,
+    name: "Roma's Italian Restaurant",
+    cuisine: 'Italian',
+    zip: '75078',
+    miles: 1.5,
+    city: 'Prosper',
+    address: '380 La Cima Blvd', // UPDATE with real address
+    dealTitle: 'Free Drink with Any Pasta Lunch',
+    description: 'Classic pasta lunch dishes made with fresh ingredients.',
+    originalPrice: '$17.99',
+    salePrice: '$13.99',
+    discount: 'Save $4 + free drink',
+    window: '11:00 AM – 2:00 PM',
+    scarcityLeft: 5,
+    scarcityTotal: 15,
+    image: '🍝',
+    featured: true,
+  },
+  {
+    id: 2,
+    name: 'Fontina Ristorante',
+    cuisine: 'Italian',
+    zip: '75069',
+    miles: 4.8,
+    city: 'McKinney',
+    address: '215 E Louisiana St', // UPDATE with real address
+    dealTitle: '15% Off Lunch Menu',
+    description: 'Traditional Italian lunch menu in downtown McKinney.',
+    originalPrice: '$18.00',
+    salePrice: '$15.30',
+    discount: '15% off',
+    window: '11:30 AM – 2:30 PM',
+    scarcityLeft: 6,
+    scarcityTotal: 20,
+    image: '🍷',
+    featured: false,
+  },
+  {
+    id: 3,
+    name: 'Salute Italian Restaurant',
+    cuisine: 'Italian',
+    zip: '75078',
+    miles: 2.2,
+    city: 'Prosper',
+    address: '400 W Frontier Pkwy', // UPDATE with real address
+    dealTitle: 'Lunch Pasta + Salad Combo $12',
+    description: 'Classic Italian lunch combo with pasta and side salad.',
+    originalPrice: '$16.00',
+    salePrice: '$12.00',
+    discount: 'Combo pricing',
+    window: '11:00 AM – 2:00 PM',
+    scarcityLeft: 7,
+    scarcityTotal: 18,
+    image: '🍕',
+    featured: false,
+  },
+  {
+    id: 4,
+    name: 'Hutchins BBQ',
+    cuisine: 'BBQ',
+    zip: '75070',
+    miles: 4.5,
+    city: 'McKinney',
+    address: '1301 N Central Expy', // UPDATE with real address
+    dealTitle: 'Free Dessert with BBQ Plate',
+    description: 'Famous brisket, ribs, and a complimentary dessert.',
+    originalPrice: '$19.99',
+    salePrice: '$19.99',
+    discount: 'Free dessert',
+    window: '11:00 AM – 3:00 PM',
+    scarcityLeft: 8,
+    scarcityTotal: 25,
+    image: '🍖',
+    featured: true,
+  },
+  {
+    id: 5,
+    name: 'Local Yocal BBQ & Grill',
+    cuisine: 'BBQ',
+    zip: '75069',
+    miles: 4.2,
+    city: 'McKinney',
+    address: '108 E Virginia St', // UPDATE with real address
+    dealTitle: '10% Off Lunch Plates',
+    description: 'Farm-to-table BBQ with responsibly sourced meats.',
+    originalPrice: '$20.00',
+    salePrice: '$18.00',
+    discount: '10% off',
+    window: '11:00 AM – 2:00 PM',
+    scarcityLeft: 6,
+    scarcityTotal: 14,
+    image: '🔥',
+    featured: false,
+  },
+  {
+    id: 6,
+    name: 'Tender Smokehouse',
+    cuisine: 'BBQ',
+    zip: '75009',
+    miles: 1.8,
+    city: 'Celina',
+    address: '2700 W Outer Loop', // UPDATE with real address
+    dealTitle: '2 Meat Plate + Drink $13.99',
+    description: 'Scratch-made BBQ with sides included.',
+    originalPrice: '$17.99',
+    salePrice: '$13.99',
+    discount: 'Combo deal',
+    window: '11:00 AM – 2:30 PM',
+    scarcityLeft: 4,
+    scarcityTotal: 12,
+    image: '🍗',
+    featured: true,
+  },
+  {
+    id: 7,
+    name: "Cookie's Mexican Food",
+    cuisine: 'Mexican',
+    zip: '75070',
+    miles: 3.9,
+    city: 'McKinney',
+    address: '519 N Central Expy', // UPDATE with real address
+    dealTitle: '$9 Burrito Lunch Special',
+    description: 'Classic burritos and tacos with fast service.',
+    originalPrice: '$12.50',
+    salePrice: '$9.00',
+    discount: 'Save $3.50',
+    window: '10:30 AM – 2:00 PM',
+    scarcityLeft: 9,
+    scarcityTotal: 20,
+    image: '🌯',
+    featured: false,
+  },
+  {
+    id: 8,
+    name: 'Mi Luna Tex-Mex',
+    cuisine: 'Tex-Mex',
+    zip: '75078',
+    miles: 2.6,
+    city: 'Prosper',
+    address: '141 S Preston Rd', // UPDATE with real address
+    dealTitle: 'Free Queso with Any Entree',
+    description: 'Bold Tex-Mex flavors with a popular local following.',
+    originalPrice: '$15.99',
+    salePrice: '$15.99',
+    discount: 'Free appetizer',
+    window: '11:00 AM – 3:00 PM',
+    scarcityLeft: 5,
+    scarcityTotal: 15,
+    image: '🧀',
+    featured: false,
+  },
+  {
+    id: 9,
+    name: 'Spoon + Fork Thai Kitchen',
+    cuisine: 'Thai',
+    zip: '75070',
+    miles: 4.1,
+    city: 'McKinney',
+    address: '380 S Central Expy', // UPDATE with real address
+    dealTitle: 'Lunch Curry + Drink $11.99',
+    description: 'Popular Thai curries and stir-fry dishes.',
+    originalPrice: '$15.99',
+    salePrice: '$11.99',
+    discount: 'Save $4',
+    window: '11:00 AM – 2:30 PM',
+    scarcityLeft: 6,
+    scarcityTotal: 16,
+    image: '🍜',
+    featured: false,
+  },
+  {
+    id: 10,
+    name: "Lucy's on the Square",
+    cuisine: 'American',
+    zip: '75009',
+    miles: 1.2,
+    city: 'Celina',
+    address: '210 W Walnut St', // UPDATE with real address
+    dealTitle: 'Free Drink with Lunch Entree',
+    description: 'Comfort food in a local Celina favorite spot.',
+    originalPrice: '$14.99',
+    salePrice: '$12.99',
+    discount: 'Save $2 + free drink',
+    window: '11:00 AM – 2:00 PM',
+    scarcityLeft: 7,
+    scarcityTotal: 18,
+    image: '🍽️',
+    featured: true,
+  },
+];
+
 function DealCouponCard({ deal, isFavorite, onToggleFavorite, onRedeem }) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -85,15 +281,18 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const filteredDeals = useMemo(() => {
+    const trimmed = zipCode.trim();
     return deals.filter((deal) => {
-      const hasZip = zipCode.trim() !== '';
-      const matchZip = !hasZip || deal.zip === zipCode.trim();
-      const matchRadius = !hasZip || deal.miles <= radius;
+      // If no ZIP entered — show ALL restaurants
+      const matchZip = trimmed === '' || deal.zip === trimmed;
+      const matchRadius = trimmed === '' || deal.miles <= radius;
       const matchCuisine = cuisine === 'All' || deal.cuisine === cuisine;
       const matchFavorite = !showFavoritesOnly || favorites.includes(deal.id);
       return matchZip && matchRadius && matchCuisine && matchFavorite;
     });
   }, [deals, zipCode, radius, cuisine, favorites, showFavoritesOnly]);
+
+  const hasZip = zipCode.trim() !== '';
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-5">
@@ -127,7 +326,8 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
                 <input
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
-                  placeholder="Enter ZIP"
+                  placeholder="Enter ZIP to filter"
+                  maxLength={5}
                   className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
                 />
               </div>
@@ -136,7 +336,8 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
                 <select
                   value={radius}
                   onChange={(e) => setRadius(Number(e.target.value))}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
+                  disabled={!hasZip}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300 disabled:opacity-40"
                 >
                   <option value={5}>5 mi</option>
                   <option value={10}>10 mi</option>
@@ -146,6 +347,16 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
                 </select>
               </div>
             </div>
+
+            {/* Clear ZIP button */}
+            {hasZip && (
+              <button
+                onClick={() => setZipCode('')}
+                className="mt-2 text-xs text-slate-400 hover:text-orange-600 underline"
+              >
+                Clear filter — show all restaurants
+              </button>
+            )}
 
             <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-1">
               {cuisines.map((item) => (
@@ -162,7 +373,11 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
             <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-orange-50 px-4 py-3">
               <div>
                 <p className="text-sm font-semibold text-slate-900">{filteredDeals.length} deals found</p>
-                <p className="text-xs text-slate-500">{zipCode.trim() === '' ? 'Showing all available deals' : `Near ${zipCode} within ${radius} miles`}</p>
+                <p className="text-xs text-slate-500">
+                  {!hasZip
+                    ? 'Showing all available deals — enter a ZIP to filter by location'
+                    : `Showing results near ${zipCode} within ${radius} miles`}
+                </p>
               </div>
               <button
                 onClick={() => setShowFavoritesOnly((v) => !v)}
@@ -187,7 +402,10 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
             {filteredDeals.length === 0 && (
               <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
                 <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
-                <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine.</p>
+                <p className="mt-2 text-sm text-slate-500">Try a larger radius, a different ZIP code, or tap All cuisine.</p>
+                <button onClick={() => setZipCode('')} className="mt-4 rounded-2xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
+                  Show all restaurants
+                </button>
               </div>
             )}
           </div>
@@ -257,7 +475,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 
       {/* Hero */}
       <section className="border-b border-slate-200 bg-gradient-to-b from-orange-50 via-white to-white">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:px-8 lg:py-20 lg:items-start">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:items-start lg:px-8 lg:py-20">
           <div>
             <div className="inline-flex rounded-full border border-orange-200 bg-white px-4 py-1 text-sm font-medium text-orange-700 shadow-sm">
               Early partner rollout · Celina · Prosper · McKinney
@@ -290,7 +508,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
           </div>
 
-          {/* Preview card — self-start prevents stretching to fill column height */}
+          {/* Preview card */}
           <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-200 self-start">
             <div className="rounded-[28px] bg-slate-50 p-5">
               <div className="mb-4 flex items-center justify-between">
@@ -455,23 +673,10 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 }
 
 export default function KuidagoLandingPage() {
-  const initialDeals = [
-    { id: 1, name: "Roma's Italian Restaurant", cuisine: 'Italian', zip: '75078', miles: 1.5, city: 'Prosper', address: '100 N Preston Rd', dealTitle: 'Free Drink with Any Pasta Lunch', description: 'Classic pasta lunch dishes made with fresh ingredients.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Save $4 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🍝', featured: true },
-    { id: 2, name: 'Fontina Ristorante', cuisine: 'Italian', zip: '75069', miles: 4.8, city: 'McKinney', address: '215 E Louisiana St', dealTitle: '15% Off Lunch Menu', description: 'Traditional Italian lunch menu in downtown McKinney.', originalPrice: '$18.00', salePrice: '$15.30', discount: '15% off', window: '11:30 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 20, image: '🍷', featured: false },
-    { id: 3, name: 'Salute Italian Restaurant', cuisine: 'Italian', zip: '75078', miles: 2.2, city: 'Prosper', address: '400 W Frontier Pkwy', dealTitle: 'Lunch Pasta + Salad Combo $12', description: 'Classic Italian lunch combo with pasta and side salad.', originalPrice: '$16.00', salePrice: '$12.00', discount: 'Combo pricing', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍕', featured: false },
-    { id: 4, name: 'Hutchins BBQ', cuisine: 'BBQ', zip: '75070', miles: 4.5, city: 'McKinney', address: '1301 N Central Expy', dealTitle: 'Free Dessert with BBQ Plate', description: 'Famous brisket, ribs, and a complimentary dessert.', originalPrice: '$19.99', salePrice: '$19.99', discount: 'Free dessert', window: '11:00 AM – 3:00 PM', scarcityLeft: 8, scarcityTotal: 25, image: '🍖', featured: true },
-    { id: 5, name: 'Local Yocal BBQ & Grill', cuisine: 'BBQ', zip: '75069', miles: 4.2, city: 'McKinney', address: '108 E Virginia St', dealTitle: '10% Off Lunch Plates', description: 'Farm-to-table BBQ with responsibly sourced meats.', originalPrice: '$20.00', salePrice: '$18.00', discount: '10% off', window: '11:00 AM – 2:00 PM', scarcityLeft: 6, scarcityTotal: 14, image: '🔥', featured: false },
-    { id: 6, name: 'Tender Smokehouse', cuisine: 'BBQ', zip: '75009', miles: 1.8, city: 'Celina', address: '2700 W Outer Loop', dealTitle: '2 Meat Plate + Drink $13.99', description: 'Scratch-made BBQ with sides included.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Combo deal', window: '11:00 AM – 2:30 PM', scarcityLeft: 4, scarcityTotal: 12, image: '🍗', featured: true },
-    { id: 7, name: "Cookie's Mexican Food", cuisine: 'Mexican', zip: '75070', miles: 3.9, city: 'McKinney', address: '519 N Central Expy', dealTitle: '$9 Burrito Lunch Special', description: 'Classic burritos and tacos with fast service.', originalPrice: '$12.50', salePrice: '$9.00', discount: 'Save $3.50', window: '10:30 AM – 2:00 PM', scarcityLeft: 9, scarcityTotal: 20, image: '🌯', featured: false },
-    { id: 8, name: 'Mi Luna Tex-Mex', cuisine: 'Tex-Mex', zip: '75078', miles: 2.6, city: 'Prosper', address: '141 S Preston Rd', dealTitle: 'Free Queso with Any Entree', description: 'Bold Tex-Mex flavors with a popular local following.', originalPrice: '$15.99', salePrice: '$15.99', discount: 'Free appetizer', window: '11:00 AM – 3:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🧀', featured: false },
-    { id: 9, name: 'Spoon + Fork Thai Kitchen', cuisine: 'Thai', zip: '75070', miles: 4.1, city: 'McKinney', address: '380 S Central Expy', dealTitle: 'Lunch Curry + Drink $11.99', description: 'Popular Thai curries and stir-fry dishes.', originalPrice: '$15.99', salePrice: '$11.99', discount: 'Save $4', window: '11:00 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 16, image: '🍜', featured: false },
-    { id: 10, name: "Lucy's on the Square", cuisine: 'American', zip: '75009', miles: 1.2, city: 'Celina', address: '210 W Walnut St', dealTitle: 'Free Drink with Lunch Entree', description: 'Comfort food in a local Celina favorite spot.', originalPrice: '$14.99', salePrice: '$12.99', discount: 'Save $2 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍽️', featured: true },
-  ];
-
   const [page, setPage] = useState('partner');
-  const [deals, setDeals] = useState(initialDeals);
-  const [zipCode, setZipCode] = useState('75009');
-  const [radius, setRadius] = useState(5);
+  const [deals, setDeals] = useState(INITIAL_DEALS);
+  const [zipCode, setZipCode] = useState(''); // blank by default — shows all restaurants
+  const [radius, setRadius] = useState(10);
   const [cuisine, setCuisine] = useState('All');
   const [favorites, setFavorites] = useState([]);
   const [redeemedDeal, setRedeemedDeal] = useState(null);
