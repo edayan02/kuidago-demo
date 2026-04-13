@@ -283,7 +283,6 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
   const filteredDeals = useMemo(() => {
     const trimmed = zipCode.trim();
     return deals.filter((deal) => {
-      // If no ZIP entered — show ALL restaurants
       const matchZip = trimmed === '' || deal.zip === trimmed;
       const matchRadius = trimmed === '' || deal.miles <= radius;
       const matchCuisine = cuisine === 'All' || deal.cuisine === cuisine;
@@ -312,10 +311,7 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
                 <p className="text-2xl font-bold tracking-tight text-slate-900">Kuidago</p>
                 <p className="mt-1 text-sm text-slate-500">Food deals near you</p>
               </div>
-              <button
-                onClick={onOpenPartnerPage}
-                className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700"
-              >
+              <button onClick={onOpenPartnerPage} className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700">
                 For restaurants
               </button>
             </div>
@@ -348,12 +344,8 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
               </div>
             </div>
 
-            {/* Clear ZIP button */}
             {hasZip && (
-              <button
-                onClick={() => setZipCode('')}
-                className="mt-2 text-xs text-slate-400 hover:text-orange-600 underline"
-              >
+              <button onClick={() => setZipCode('')} className="mt-2 text-xs text-slate-400 hover:text-orange-600 underline">
                 Clear filter — show all restaurants
               </button>
             )}
@@ -374,9 +366,7 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
               <div>
                 <p className="text-sm font-semibold text-slate-900">{filteredDeals.length} deals found</p>
                 <p className="text-xs text-slate-500">
-                  {!hasZip
-                    ? 'Showing all available deals — enter a ZIP to filter by location'
-                    : `Showing results near ${zipCode} within ${radius} miles`}
+                  {!hasZip ? 'Showing all available deals — enter a ZIP to filter' : `Near ${zipCode} within ${radius} miles`}
                 </p>
               </div>
               <button
@@ -398,7 +388,6 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
                 onRedeem={onRedeem}
               />
             ))}
-
             {filteredDeals.length === 0 && (
               <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
                 <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
@@ -496,7 +485,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                { label: 'Initial launch', value: 'First 10 restaurants' },
+                { label: 'Initial launch', value: 'First 20 restaurants' },
                 { label: 'Customer filters', value: 'ZIP · Radius · Cuisine' },
                 { label: 'Offer style', value: 'Limited-time local deals' },
               ].map((item) => (
@@ -531,12 +520,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
                         <p className="mt-1 text-sm text-slate-600">{deal.dealTitle}</p>
                         <p className="mt-0.5 text-xs text-slate-500">{deal.city} · {deal.cuisine} · {deal.miles} mi</p>
                         {deal.address && (
-                          <a
-                            href={googleMapsUrl(deal.address, deal.city)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-1 flex items-center gap-1 text-xs text-orange-600 hover:underline"
-                          >
+                          <a href={googleMapsUrl(deal.address, deal.city)} target="_blank" rel="noopener noreferrer" className="mt-1 flex items-center gap-1 text-xs text-orange-600 hover:underline">
                             📍 {deal.address}
                           </a>
                         )}
@@ -589,15 +573,107 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         </div>
       </section>
 
+      {/* Pricing section */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-slate-900">Simple, transparent pricing</h2>
+            <p className="mt-3 text-lg text-slate-500">Free during our launch period. No surprises after.</p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+
+            {/* Launch plan */}
+            <div className="relative rounded-3xl border-2 border-orange-400 bg-white p-8 shadow-md">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span className="rounded-full bg-orange-500 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow">
+                  Current — First 20 restaurants
+                </span>
+              </div>
+              <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-orange-600">Launch period</p>
+              <p className="mt-2 text-5xl font-bold text-slate-900">Free</p>
+              <p className="mt-1 text-sm text-slate-500">No credit card required</p>
+              <ul className="mt-6 space-y-3 text-sm text-slate-600">
+                {[
+                  'Unlimited deal listings',
+                  'Featured placement in launch promotion',
+                  'Full access to customer app',
+                  'No commitment — opt out anytime',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-emerald-500">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="#partner-form" className="mt-8 block rounded-2xl bg-orange-600 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-orange-700 transition">
+                Join free now
+              </a>
+            </div>
+
+            {/* Pay per customer */}
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">After launch</p>
+              <p className="mt-2 text-5xl font-bold text-slate-900">$1.99</p>
+              <p className="mt-1 text-sm text-slate-500">per customer redemption</p>
+              <ul className="mt-6 space-y-3 text-sm text-slate-600">
+                {[
+                  'Pay only when it works',
+                  'No monthly commitment',
+                  'Full access to customer app',
+                  'Cancel or pause anytime',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-emerald-500">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-medium text-slate-500">
+                Available after launch period
+              </p>
+            </div>
+
+            {/* Monthly flat fee */}
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">After launch</p>
+              <p className="mt-2 text-5xl font-bold text-slate-900">$49.99</p>
+              <p className="mt-1 text-sm text-slate-500">flat monthly fee</p>
+              <ul className="mt-6 space-y-3 text-sm text-slate-600">
+                {[
+                  'Unlimited customer redemptions',
+                  'Best value at 25+ customers/month',
+                  'Full access to customer app',
+                  'Cancel anytime',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-emerald-500">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-medium text-slate-500">
+                Available after launch period
+              </p>
+            </div>
+
+          </div>
+
+          <p className="mt-8 text-center text-sm text-slate-400">
+            During the launch period all early partners join completely free. After launch you choose the plan that works best for you — or opt out with no questions asked.
+          </p>
+        </div>
+      </section>
+
       {/* Partner form */}
       <section id="partner-form" className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
         <div className="rounded-[32px] bg-slate-900 px-8 py-14 text-white shadow-2xl shadow-slate-300">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Early partner agreement</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Join early, stand out locally, and get featured in the first launch group.
+            Join free during our launch and get featured in the first group.
           </h2>
           <p className="mt-4 max-w-3xl text-lg text-slate-300">
-            Complete the form below to request an early partner listing.
+            Complete the form below to request an early partner listing. No cost, no commitment — you can opt out at any time.
           </p>
 
           {!submitted ? (
@@ -675,7 +751,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 export default function KuidagoLandingPage() {
   const [page, setPage] = useState('partner');
   const [deals, setDeals] = useState(INITIAL_DEALS);
-  const [zipCode, setZipCode] = useState(''); // blank by default — shows all restaurants
+  const [zipCode, setZipCode] = useState('');
   const [radius, setRadius] = useState(10);
   const [cuisine, setCuisine] = useState('All');
   const [favorites, setFavorites] = useState([]);
