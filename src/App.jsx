@@ -316,7 +316,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
                   <p className="text-sm font-medium text-slate-500">Restaurant preview</p>
                   <h3 className="text-xl font-semibold text-slate-900">How your deal appears</h3>
                 </div>
-                <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">Demo</span>
+                <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">Preview</span>
               </div>
               <div className="space-y-3">
                 {deals.slice(0, 3).map((deal) => (
@@ -491,7 +491,7 @@ export default function KuidagoLandingPage() {
             <div className="mt-6 rounded-3xl bg-orange-50 p-6 text-center">
               <p className="text-sm text-orange-700">Show this code to the restaurant</p>
               <p className="mt-3 text-3xl font-bold tracking-[0.2em] text-slate-900">{redeemedDeal.code}</p>
-              <p className="mt-3 text-sm text-slate-600">This is the current shopper-side demo flow.</p>
+              <p className="mt-3 text-sm text-slate-600">This is the current shopper-side Preview flow.</p>
             </div>
             <div className="mt-6 rounded-2xl border border-slate-200 p-4 text-left">
               <p className="text-sm text-slate-500">Offer</p>
