@@ -18,7 +18,7 @@ const INITIAL_DEALS = [
     zip: '75078',
     miles: 1.5,
     city: 'Prosper',
-    address: '1361 E University Dr #70, Prosper, TX 75078', // UPDATE with real address
+    address: '1361 E University Dr #70, Prosper, TX 75078',
     dealTitle: 'Free Drink with Any Pasta Lunch',
     description: 'Classic pasta lunch dishes made with fresh ingredients.',
     originalPrice: '$17.99',
@@ -37,7 +37,7 @@ const INITIAL_DEALS = [
     zip: '75069',
     miles: 4.8,
     city: 'McKinney',
-    address: '215 E Louisiana St', // UPDATE with real address
+    address: '215 E Louisiana St',
     dealTitle: '15% Off Lunch Menu',
     description: 'Traditional Italian lunch menu in downtown McKinney.',
     originalPrice: '$18.00',
@@ -56,7 +56,7 @@ const INITIAL_DEALS = [
     zip: '75078',
     miles: 2.2,
     city: 'Prosper',
-    address: '400 W Frontier Pkwy', // UPDATE with real address
+    address: '400 W Frontier Pkwy',
     dealTitle: 'Lunch Pasta + Salad Combo $12',
     description: 'Classic Italian lunch combo with pasta and side salad.',
     originalPrice: '$16.00',
@@ -75,7 +75,7 @@ const INITIAL_DEALS = [
     zip: '75070',
     miles: 4.5,
     city: 'McKinney',
-    address: '1301 N Central Expy', // UPDATE with real address
+    address: '1301 N Central Expy',
     dealTitle: 'Free Dessert with BBQ Plate',
     description: 'Famous brisket, ribs, and a complimentary dessert.',
     originalPrice: '$19.99',
@@ -94,7 +94,7 @@ const INITIAL_DEALS = [
     zip: '75069',
     miles: 4.2,
     city: 'McKinney',
-    address: '108 E Virginia St', // UPDATE with real address
+    address: '108 E Virginia St',
     dealTitle: '10% Off Lunch Plates',
     description: 'Farm-to-table BBQ with responsibly sourced meats.',
     originalPrice: '$20.00',
@@ -113,7 +113,7 @@ const INITIAL_DEALS = [
     zip: '75009',
     miles: 1.8,
     city: 'Celina',
-    address: '2700 W Outer Loop', // UPDATE with real address
+    address: '2700 W Outer Loop',
     dealTitle: '2 Meat Plate + Drink $13.99',
     description: 'Scratch-made BBQ with sides included.',
     originalPrice: '$17.99',
@@ -132,7 +132,7 @@ const INITIAL_DEALS = [
     zip: '75070',
     miles: 3.9,
     city: 'McKinney',
-    address: '519 N Central Expy', // UPDATE with real address
+    address: '519 N Central Expy',
     dealTitle: '$9 Burrito Lunch Special',
     description: 'Classic burritos and tacos with fast service.',
     originalPrice: '$12.50',
@@ -151,7 +151,7 @@ const INITIAL_DEALS = [
     zip: '75078',
     miles: 2.6,
     city: 'Prosper',
-    address: '141 S Preston Rd', // UPDATE with real address
+    address: '141 S Preston Rd',
     dealTitle: 'Free Queso with Any Entree',
     description: 'Bold Tex-Mex flavors with a popular local following.',
     originalPrice: '$15.99',
@@ -170,7 +170,7 @@ const INITIAL_DEALS = [
     zip: '75070',
     miles: 4.1,
     city: 'McKinney',
-    address: '380 S Central Expy', // UPDATE with real address
+    address: '380 S Central Expy',
     dealTitle: 'Lunch Curry + Drink $11.99',
     description: 'Popular Thai curries and stir-fry dishes.',
     originalPrice: '$15.99',
@@ -189,7 +189,7 @@ const INITIAL_DEALS = [
     zip: '75009',
     miles: 1.2,
     city: 'Celina',
-    address: '210 W Walnut St', // UPDATE with real address
+    address: '210 W Walnut St',
     dealTitle: 'Free Drink with Lunch Entree',
     description: 'Comfort food in a local Celina favorite spot.',
     originalPrice: '$14.99',
@@ -203,9 +203,38 @@ const INITIAL_DEALS = [
   },
 ];
 
+// ============================================================
+// DEMO RIBBON — reusable across all card types
+// ============================================================
+function DemoRibbon() {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '18px',
+        right: '-30px',
+        background: '#F0997B',
+        color: '#4A1B0C',
+        fontSize: '11px',
+        fontWeight: '600',
+        padding: '5px 42px',
+        transform: 'rotate(35deg)',
+        letterSpacing: '0.05em',
+        pointerEvents: 'none',
+        zIndex: 10,
+      }}
+    >
+      DEMO
+    </div>
+  );
+}
+
 function DealCouponCard({ deal, isFavorite, onToggleFavorite, onRedeem }) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      {/* DEMO ribbon */}
+      <DemoRibbon />
+
       <div className="flex items-start gap-3">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-3xl">
           {deal.image}
@@ -497,7 +526,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
           </div>
 
-          {/* Preview card */}
+          {/* Preview cards — with DEMO ribbon */}
           <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-200 self-start">
             <div className="rounded-[28px] bg-slate-50 p-5">
               <div className="mb-4 flex items-center justify-between">
@@ -509,7 +538,10 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               </div>
               <div className="space-y-3">
                 {previewDeals.map((deal) => (
-                  <div key={deal.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div key={deal.id} className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                    {/* DEMO ribbon on preview cards */}
+                    <DemoRibbon />
+
                     <div className="flex items-start gap-3">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-2xl">{deal.image}</div>
                       <div className="min-w-0 flex-1">
