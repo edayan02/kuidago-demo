@@ -66,7 +66,7 @@ function DealCouponCard({ deal, isFavorite, onToggleFavorite, onRedeem }) {
           <div className="mt-4 flex items-center justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-red-600">Only {deal.scarcityLeft}/{deal.scarcityTotal} left</p>
-              <p className="mt-1 text-xs text-slate-500">Call: {deal.phone}</p>
+              <p className="mt-1 text-xs text-slate-500">Contact via app</p>
             </div>
             <button
               onClick={() => onRedeem(deal)}
@@ -98,93 +98,103 @@ function CustomerMarketplace({ deals, zipCode, setZipCode, radius, setRadius, cu
   }, [deals, zipCode, radius, cuisine, favorites, showFavoritesOnly]);
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-5">
-      <AppStoreFrame>
-        <div className="border-b border-slate-100 bg-white px-4 pb-4 pt-4">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-2xl font-bold tracking-tight text-slate-900">Kuidago</p>
-              <p className="mt-1 text-sm text-slate-500">Food deals near you</p>
-            </div>
-            <button
-              onClick={onOpenPartnerPage}
-              className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700"
-            >
-              For restaurants
-            </button>
+    <div className="min-h-screen bg-slate-100 px-4 py-5 lg:block">
+      <div className="mx-auto w-full max-w-[430px] rounded-[34px] border border-slate-200 bg-white shadow-2xl shadow-slate-200">
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3 text-sm text-slate-500">
+          <span>9:41</span>
+          <div className="flex items-center gap-1">
+            <span className="h-2 w-2 rounded-full bg-slate-400" />
+            <span className="h-2 w-2 rounded-full bg-slate-400" />
+            <span className="h-2 w-2 rounded-full bg-slate-400" />
           </div>
-
-          <div className="mt-4 grid grid-cols-[1fr,120px] gap-3">
-            <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">ZIP code</label>
-              <input
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
-                placeholder="Enter ZIP"
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Radius</label>
-              <select
-                value={radius}
-                onChange={(e) => setRadius(Number(e.target.value))}
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
-              >
-                <option value={5}>5 mi</option>
-                <option value={10}>10 mi</option>
-                <option value={20}>20 mi</option>
-                <option value={30}>30 mi</option>
-                <option value={50}>50 mi</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-1">
-            {cuisines.map((item) => (
+        </div>
+        <div className="min-h-[780px] overflow-hidden rounded-b-[34px] bg-slate-50">
+          <div className="border-b border-slate-100 bg-white px-4 pb-4 pt-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-2xl font-bold tracking-tight text-slate-900">Kuidago</p>
+                <p className="mt-1 text-sm text-slate-500">Food deals near you</p>
+              </div>
               <button
-                key={item}
-                onClick={() => setCuisine(item)}
-                className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${cuisine === item ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600'}`}
+                onClick={onOpenPartnerPage}
+                className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700"
               >
-                {item}
+                For restaurants
               </button>
+            </div>
+
+            <div className="mt-4 grid grid-cols-[1fr,120px] gap-3">
+              <div>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">ZIP code</label>
+                <input
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  placeholder="Enter ZIP"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Radius</label>
+                <select
+                  value={radius}
+                  onChange={(e) => setRadius(Number(e.target.value))}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-orange-300"
+                >
+                  <option value={5}>5 mi</option>
+                  <option value={10}>10 mi</option>
+                  <option value={20}>20 mi</option>
+                  <option value={30}>30 mi</option>
+                  <option value={50}>50 mi</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-1">
+              {cuisines.map((item) => (
+                <button
+                  key={item}
+                  onClick={() => setCuisine(item)}
+                  className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${cuisine === item ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600'}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-orange-50 px-4 py-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-900">{filteredDeals.length} deals found</p>
+                <p className="text-xs text-slate-500">{zipCode.trim() === '' ? 'Showing all available deals' : `Near ${zipCode} within ${radius} miles`}</p>
+              </div>
+              <button
+                onClick={() => setShowFavoritesOnly((v) => !v)}
+                className={`rounded-full px-3 py-1.5 text-xs font-semibold ${showFavoritesOnly ? 'bg-rose-100 text-rose-700' : 'bg-white text-slate-600 border border-slate-200'}`}
+              >
+                ♥ Favorites {favorites.length > 0 ? `(${favorites.length})` : ''}
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3 px-4 py-4">
+            {filteredDeals.map((deal) => (
+              <DealCouponCard
+                key={deal.id}
+                deal={deal}
+                isFavorite={favorites.includes(deal.id)}
+                onToggleFavorite={onToggleFavorite}
+                onRedeem={onRedeem}
+              />
             ))}
-          </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-orange-50 px-4 py-3">
-            <div>
-              <p className="text-sm font-semibold text-slate-900">{filteredDeals.length} deals found</p>
-              <p className="text-xs text-slate-500">{zipCode.trim() === '' ? 'Showing all available deals in the system' : `Showing results near ${zipCode} within ${radius} miles`}</p>
-            </div>
-            <button
-              onClick={() => setShowFavoritesOnly((v) => !v)}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold ${showFavoritesOnly ? 'bg-rose-100 text-rose-700' : 'bg-white text-slate-600 border border-slate-200'}`}
-            >
-              ♥ Favorites {favorites.length > 0 ? `(${favorites.length})` : ''}
-            </button>
+            {filteredDeals.length === 0 && (
+              <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
+                <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
+                <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine.</p>
+              </div>
+            )}
           </div>
         </div>
-
-        <div className="space-y-3 px-4 py-4">
-          {filteredDeals.map((deal) => (
-            <DealCouponCard
-              key={deal.id}
-              deal={deal}
-              isFavorite={favorites.includes(deal.id)}
-              onToggleFavorite={onToggleFavorite}
-              onRedeem={onRedeem}
-            />
-          ))}
-
-          {filteredDeals.length === 0 && (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
-              <p className="text-base font-semibold text-slate-900">No deals match this filter.</p>
-              <p className="mt-2 text-sm text-slate-500">Try a larger radius, another ZIP code, or tap All cuisine.</p>
-            </div>
-          )}
-        </div>
-      </AppStoreFrame>
+      </div>
     </div>
   );
 }
@@ -235,16 +245,11 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-        },
+        headers: { Accept: 'application/json' },
         body: payload,
       });
 
-      if (!response.ok) {
-        throw new Error('Submission failed');
-      }
-
+      if (!response.ok) throw new Error('Submission failed');
       setSubmitted(true);
     } catch (error) {
       alert('There was a problem sending the request. Please try again.');
@@ -255,11 +260,12 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
+      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
           <div>
             <p className="text-2xl font-bold tracking-tight text-slate-900">Kuidago</p>
-            <p className="text-sm text-slate-500">Restaurant partner page</p>
+            <p className="text-sm text-slate-500">Helping local restaurants fill slower hours</p>
           </div>
           <button
             onClick={onOpenMarketplace}
@@ -270,6 +276,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         </div>
       </header>
 
+      {/* Hero */}
       <section className="border-b border-slate-200 bg-gradient-to-b from-orange-50 via-white to-white">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:px-8 lg:py-20">
           <div>
@@ -289,7 +296,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               >
                 View customer app experience
               </button>
-              <a href="#partner-form" className="rounded-2xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50">
+              <a href="#partner-form" className="rounded-2xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50 text-center">
                 Join as early partner
               </a>
             </div>
@@ -309,6 +316,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
           </div>
 
+          {/* Preview card */}
           <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-200">
             <div className="rounded-[28px] bg-slate-50 p-5">
               <div className="mb-4 flex items-center justify-between">
@@ -316,7 +324,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
                   <p className="text-sm font-medium text-slate-500">Restaurant preview</p>
                   <h3 className="text-xl font-semibold text-slate-900">How your deal appears</h3>
                 </div>
-                <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">Preview</span>
+                <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">Live</span>
               </div>
               <div className="space-y-3">
                 {deals.slice(0, 3).map((deal) => (
@@ -340,6 +348,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         </div>
       </section>
 
+      {/* Benefits */}
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <div className="grid gap-6 md:grid-cols-3">
@@ -366,6 +375,28 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         </div>
       </section>
 
+      {/* How it works */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+          <h2 className="text-3xl font-bold text-slate-900 text-center">How it works</h2>
+          <p className="mt-3 text-center text-slate-500 text-lg">Three simple steps from setup to customers walking in.</p>
+          <div className="mt-12 grid gap-8 md:grid-cols-3 text-center">
+            {[
+              { step: '01', title: 'You create a deal', text: 'Set your offer, time window, and how many are available. We handle the rest.' },
+              { step: '02', title: 'Customers discover it', text: 'People nearby search by ZIP, distance, and cuisine type and find your offer instantly.' },
+              { step: '03', title: 'They walk in', text: 'Customers redeem a code at your restaurant during the deal window. More traffic, less guesswork.' },
+            ].map((item) => (
+              <div key={item.step} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                <p className="text-5xl font-bold text-orange-100">{item.step}</p>
+                <h3 className="mt-3 text-lg font-semibold text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-slate-600">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partner form */}
       <section id="partner-form" className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
         <div className="rounded-[32px] bg-slate-900 px-8 py-14 text-white shadow-2xl shadow-slate-300">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Early partner agreement</p>
@@ -378,15 +409,15 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
 
           {!submitted ? (
             <form onSubmit={handleSubmit} className="mt-10 grid gap-4 sm:grid-cols-2">
-              <input name="restaurantName" value={formData.restaurantName} onChange={handleFormChange} required placeholder="Restaurant name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="contactName" value={formData.contactName} onChange={handleFormChange} required placeholder="Contact name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="email" type="email" value={formData.email} onChange={handleFormChange} required placeholder="Business email" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="phone" value={formData.phone} onChange={handleFormChange} required placeholder="Phone number" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="city" value={formData.city} onChange={handleFormChange} required placeholder="City" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="address" value={formData.address} onChange={handleFormChange} required placeholder="Address" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="cuisine" value={formData.cuisine} onChange={handleFormChange} placeholder="Cuisine type" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <input name="launchTiming" value={formData.launchTiming} onChange={handleFormChange} placeholder="Preferred launch timing" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
-              <textarea name="offerIdea" value={formData.offerIdea} onChange={handleFormChange} placeholder="Proposed deal or offer idea" className="sm:col-span-2 min-h-[120px] rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400" />
+              <input name="restaurantName" value={formData.restaurantName} onChange={handleFormChange} required placeholder="Restaurant name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="contactName" value={formData.contactName} onChange={handleFormChange} required placeholder="Contact name" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="email" type="email" value={formData.email} onChange={handleFormChange} required placeholder="Business email" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="phone" value={formData.phone} onChange={handleFormChange} required placeholder="Phone number" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="city" value={formData.city} onChange={handleFormChange} required placeholder="City" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="address" value={formData.address} onChange={handleFormChange} required placeholder="Address" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="cuisine" value={formData.cuisine} onChange={handleFormChange} placeholder="Cuisine type" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <input name="launchTiming" value={formData.launchTiming} onChange={handleFormChange} placeholder="Preferred launch timing" className="rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
+              <textarea name="offerIdea" value={formData.offerIdea} onChange={handleFormChange} placeholder="Proposed deal or offer idea" className="sm:col-span-2 min-h-[120px] rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 outline-none focus:border-orange-400" />
               <label className="sm:col-span-2 flex items-start gap-3 rounded-2xl border border-slate-700 bg-slate-800 px-4 py-4 text-sm text-slate-300">
                 <input name="agreement" type="checkbox" checked={formData.agreement} onChange={handleFormChange} required className="mt-1" />
                 <span>I confirm I am authorized to submit this restaurant for early partner review and activation.</span>
@@ -408,27 +439,45 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             <div className="mt-10 rounded-[28px] border border-slate-700 bg-slate-800 p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Request received</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">Thank you, {formData.contactName || formData.restaurantName}.</h3>
-              <p className="mt-4 max-w-2xl text-slate-300">Your early partner request has been sent successfully. The Kuidago team will receive it by email at kuidago.co@gmail.com and can follow up directly.</p>
+              <p className="mt-4 max-w-2xl text-slate-300">Your early partner request has been sent successfully. The Kuidago team will receive it and follow up directly.</p>
             </div>
           )}
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <div>
+              <p className="text-lg font-bold text-slate-900">Kuidago</p>
+              <p className="mt-1 text-sm text-slate-500">Serving Celina · Prosper · McKinney</p>
+            </div>
+            <div className="flex flex-col items-center gap-2 sm:items-end">
+              <a href="mailto:kuidago.co@gmail.com" className="text-sm text-orange-600 hover:underline">
+                kuidago.co@gmail.com
+              </a>
+              <p className="text-xs text-slate-400">© {new Date().getFullYear()} Kuidago. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
 
 export default function KuidagoLandingPage() {
   const initialDeals = [
-    { id: 1, name: "Roma's Italian Restaurant", cuisine: 'Italian', zip: '75078', miles: 1.5, city: 'Prosper', phone: '(469) 555-1101', dealTitle: 'Free Drink with Any Pasta Lunch', description: 'Classic pasta lunch dishes made with fresh ingredients.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Save $4 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🍝', featured: true },
-    { id: 2, name: 'Fontina Ristorante', cuisine: 'Italian', zip: '75069', miles: 4.8, city: 'McKinney', phone: '(469) 555-1102', dealTitle: '15% Off Lunch Menu', description: 'Traditional Italian lunch menu in downtown McKinney.', originalPrice: '$18.00', salePrice: '$15.30', discount: '15% off', window: '11:30 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 20, image: '🍷', featured: false },
-    { id: 3, name: 'Salute Italian Restaurant', cuisine: 'Italian', zip: '75078', miles: 2.2, city: 'Prosper', phone: '(469) 555-1103', dealTitle: 'Lunch Pasta + Salad Combo $12', description: 'Classic Italian lunch combo with pasta and side salad.', originalPrice: '$16.00', salePrice: '$12.00', discount: 'Combo pricing', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍕', featured: false },
-    { id: 4, name: 'Hutchins BBQ', cuisine: 'BBQ', zip: '75070', miles: 4.5, city: 'McKinney', phone: '(469) 555-1104', dealTitle: 'Free Dessert with BBQ Plate', description: 'Famous brisket, ribs, and a complimentary dessert.', originalPrice: '$19.99', salePrice: '$19.99', discount: 'Free dessert', window: '11:00 AM – 3:00 PM', scarcityLeft: 8, scarcityTotal: 25, image: '🍖', featured: true },
-    { id: 5, name: 'Local Yocal BBQ & Grill', cuisine: 'BBQ', zip: '75069', miles: 4.2, city: 'McKinney', phone: '(469) 555-1105', dealTitle: '10% Off Lunch Plates', description: 'Farm-to-table BBQ with responsibly sourced meats.', originalPrice: '$20.00', salePrice: '$18.00', discount: '10% off', window: '11:00 AM – 2:00 PM', scarcityLeft: 6, scarcityTotal: 14, image: '🔥', featured: false },
-    { id: 6, name: 'Tender Smokehouse', cuisine: 'BBQ', zip: '75009', miles: 1.8, city: 'Celina', phone: '(469) 555-1106', dealTitle: '2 Meat Plate + Drink $13.99', description: 'Scratch-made BBQ with sides included.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Combo deal', window: '11:00 AM – 2:30 PM', scarcityLeft: 4, scarcityTotal: 12, image: '🍗', featured: true },
-    { id: 7, name: "Cookie's Mexican Food", cuisine: 'Mexican', zip: '75070', miles: 3.9, city: 'McKinney', phone: '(469) 555-1107', dealTitle: '$9 Burrito Lunch Special', description: 'Classic burritos and tacos with fast service.', originalPrice: '$12.50', salePrice: '$9.00', discount: 'Save $3.50', window: '10:30 AM – 2:00 PM', scarcityLeft: 9, scarcityTotal: 20, image: '🌯', featured: false },
-    { id: 8, name: 'Mi Luna Tex-Mex', cuisine: 'Tex-Mex', zip: '75078', miles: 2.6, city: 'Prosper', phone: '(469) 555-1108', dealTitle: 'Free Queso with Any Entree', description: 'Bold Tex-Mex flavors with a popular local following.', originalPrice: '$15.99', salePrice: '$15.99', discount: 'Free appetizer', window: '11:00 AM – 3:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🧀', featured: false },
-    { id: 9, name: 'Spoon + Fork Thai Kitchen', cuisine: 'Thai', zip: '75070', miles: 4.1, city: 'McKinney', phone: '(469) 555-1109', dealTitle: 'Lunch Curry + Drink $11.99', description: 'Popular Thai curries and stir-fry dishes.', originalPrice: '$15.99', salePrice: '$11.99', discount: 'Save $4', window: '11:00 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 16, image: '🍜', featured: false },
-    { id: 10, name: "Lucy's on the Square", cuisine: 'American', zip: '75009', miles: 1.2, city: 'Celina', phone: '(469) 555-1110', dealTitle: 'Free Drink with Lunch Entree', description: 'Comfort food in a local Celina favorite spot.', originalPrice: '$14.99', salePrice: '$12.99', discount: 'Save $2 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍽️', featured: true },
+    { id: 1, name: "Roma's Italian Restaurant", cuisine: 'Italian', zip: '75078', miles: 1.5, city: 'Prosper', dealTitle: 'Free Drink with Any Pasta Lunch', description: 'Classic pasta lunch dishes made with fresh ingredients.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Save $4 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🍝', featured: true },
+    { id: 2, name: 'Fontina Ristorante', cuisine: 'Italian', zip: '75069', miles: 4.8, city: 'McKinney', dealTitle: '15% Off Lunch Menu', description: 'Traditional Italian lunch menu in downtown McKinney.', originalPrice: '$18.00', salePrice: '$15.30', discount: '15% off', window: '11:30 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 20, image: '🍷', featured: false },
+    { id: 3, name: 'Salute Italian Restaurant', cuisine: 'Italian', zip: '75078', miles: 2.2, city: 'Prosper', dealTitle: 'Lunch Pasta + Salad Combo $12', description: 'Classic Italian lunch combo with pasta and side salad.', originalPrice: '$16.00', salePrice: '$12.00', discount: 'Combo pricing', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍕', featured: false },
+    { id: 4, name: 'Hutchins BBQ', cuisine: 'BBQ', zip: '75070', miles: 4.5, city: 'McKinney', dealTitle: 'Free Dessert with BBQ Plate', description: 'Famous brisket, ribs, and a complimentary dessert.', originalPrice: '$19.99', salePrice: '$19.99', discount: 'Free dessert', window: '11:00 AM – 3:00 PM', scarcityLeft: 8, scarcityTotal: 25, image: '🍖', featured: true },
+    { id: 5, name: 'Local Yocal BBQ & Grill', cuisine: 'BBQ', zip: '75069', miles: 4.2, city: 'McKinney', dealTitle: '10% Off Lunch Plates', description: 'Farm-to-table BBQ with responsibly sourced meats.', originalPrice: '$20.00', salePrice: '$18.00', discount: '10% off', window: '11:00 AM – 2:00 PM', scarcityLeft: 6, scarcityTotal: 14, image: '🔥', featured: false },
+    { id: 6, name: 'Tender Smokehouse', cuisine: 'BBQ', zip: '75009', miles: 1.8, city: 'Celina', dealTitle: '2 Meat Plate + Drink $13.99', description: 'Scratch-made BBQ with sides included.', originalPrice: '$17.99', salePrice: '$13.99', discount: 'Combo deal', window: '11:00 AM – 2:30 PM', scarcityLeft: 4, scarcityTotal: 12, image: '🍗', featured: true },
+    { id: 7, name: "Cookie's Mexican Food", cuisine: 'Mexican', zip: '75070', miles: 3.9, city: 'McKinney', dealTitle: '$9 Burrito Lunch Special', description: 'Classic burritos and tacos with fast service.', originalPrice: '$12.50', salePrice: '$9.00', discount: 'Save $3.50', window: '10:30 AM – 2:00 PM', scarcityLeft: 9, scarcityTotal: 20, image: '🌯', featured: false },
+    { id: 8, name: 'Mi Luna Tex-Mex', cuisine: 'Tex-Mex', zip: '75078', miles: 2.6, city: 'Prosper', dealTitle: 'Free Queso with Any Entree', description: 'Bold Tex-Mex flavors with a popular local following.', originalPrice: '$15.99', salePrice: '$15.99', discount: 'Free appetizer', window: '11:00 AM – 3:00 PM', scarcityLeft: 5, scarcityTotal: 15, image: '🧀', featured: false },
+    { id: 9, name: 'Spoon + Fork Thai Kitchen', cuisine: 'Thai', zip: '75070', miles: 4.1, city: 'McKinney', dealTitle: 'Lunch Curry + Drink $11.99', description: 'Popular Thai curries and stir-fry dishes.', originalPrice: '$15.99', salePrice: '$11.99', discount: 'Save $4', window: '11:00 AM – 2:30 PM', scarcityLeft: 6, scarcityTotal: 16, image: '🍜', featured: false },
+    { id: 10, name: "Lucy's on the Square", cuisine: 'American', zip: '75009', miles: 1.2, city: 'Celina', dealTitle: 'Free Drink with Lunch Entree', description: 'Comfort food in a local Celina favorite spot.', originalPrice: '$14.99', salePrice: '$12.99', discount: 'Save $2 + free drink', window: '11:00 AM – 2:00 PM', scarcityLeft: 7, scarcityTotal: 18, image: '🍽️', featured: true },
   ];
 
   const [page, setPage] = useState('partner');
@@ -491,7 +540,6 @@ export default function KuidagoLandingPage() {
             <div className="mt-6 rounded-3xl bg-orange-50 p-6 text-center">
               <p className="text-sm text-orange-700">Show this code to the restaurant</p>
               <p className="mt-3 text-3xl font-bold tracking-[0.2em] text-slate-900">{redeemedDeal.code}</p>
-              <p className="mt-3 text-sm text-slate-600">This is the current shopper-side Preview flow.</p>
             </div>
             <div className="mt-6 rounded-2xl border border-slate-200 p-4 text-left">
               <p className="text-sm text-slate-500">Offer</p>
