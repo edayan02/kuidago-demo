@@ -18,7 +18,7 @@ const INITIAL_DEALS = [
     zip: '75078',
     miles: 1.5,
     city: 'Prosper',
-    address: '380 La Cima Blvd', // UPDATE with real address
+    address: '1361 E University Dr #70, Prosper, TX 75078', // UPDATE with real address
     dealTitle: 'Free Drink with Any Pasta Lunch',
     description: 'Classic pasta lunch dishes made with fresh ingredients.',
     originalPrice: '$17.99',
