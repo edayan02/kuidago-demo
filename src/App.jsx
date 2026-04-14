@@ -499,18 +499,42 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               Early partner rollout · Celina · Prosper · McKinney
             </div>
             <h1 className="mt-5 max-w-2xl text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl">
-              Fill slower hours with limited-time deals customers can actually discover.
+              Fill slower hours with deals customers actually discover.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              Kuidago is a local food deals marketplace designed to help restaurants drive more traffic during slower periods — while customers browse real nearby offers by ZIP code, radius, and cuisine.
+              Kuidago is a local food deals marketplace that drives lunch traffic to restaurants during slower hours — customers browse real nearby offers by ZIP code, radius, and cuisine.
             </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <button onClick={onOpenMarketplace} className="rounded-2xl bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700 transition text-center">
-                View customer app experience
-              </button>
-              <a href="#partner-form" className="rounded-2xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50 text-center transition">
-                Join as early partner
+            {/* Social proof */}
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {['🍝','🍖','🌯'].map((emoji, i) => (
+                  <div key={i} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-orange-50 text-sm shadow-sm">{emoji}</div>
+                ))}
+              </div>
+              <p className="text-sm text-slate-500"><span className="font-semibold text-slate-900">3 restaurants</span> already signed up in Celina · Prosper · McKinney</p>
+            </div>
+            {/* CTAs — primary is Join, secondary is View app */}
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+              <a href="#partner-form" className="rounded-2xl bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700 transition text-center">
+                Join as early partner — it's free
               </a>
+              <button onClick={onOpenMarketplace} className="rounded-2xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50 transition text-center">
+                See the customer app
+              </button>
+            </div>
+            {/* Email capture for non-ready visitors */}
+            <div className="mt-5">
+              <p className="text-xs text-slate-400 mb-2">Not a restaurant owner? Get notified when we launch near you.</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="flex-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-orange-300 max-w-[220px]"
+                />
+                <button className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition whitespace-nowrap">
+                  Notify me
+                </button>
+              </div>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
@@ -534,7 +558,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
                   <p className="text-sm font-medium text-slate-500">Restaurant preview</p>
                   <h3 className="text-xl font-semibold text-slate-900">How your deal appears</h3>
                 </div>
-                <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">Live</span>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-500">Preview</span>
               </div>
               <div className="space-y-3">
                 {previewDeals.map((deal) => (
@@ -588,12 +612,13 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <h2 className="text-3xl font-bold text-slate-900 text-center">How it works</h2>
-          <p className="mt-3 text-center text-slate-500 text-lg">Three simple steps from setup to customers walking in.</p>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <p className="mt-3 text-center text-slate-500 text-lg">From setup to customers walking in — in minutes.</p>
+          <div className="mt-12 grid gap-6 md:grid-cols-4">
             {[
               { step: '01', title: 'You create a deal', text: 'Set your offer, time window, and how many spots are available. We handle the rest.' },
               { step: '02', title: 'Customers discover it', text: 'People nearby search by ZIP, distance, and cuisine type and find your offer instantly.' },
-              { step: '03', title: 'They walk in', text: 'Customers redeem a code at your restaurant during the deal window. More traffic, less guesswork.' },
+              { step: '03', title: 'They walk in', text: 'Customers redeem a unique code at your restaurant during the deal window.' },
+              { step: '04', title: 'You track results', text: 'Your simple dashboard shows redemptions in real time so you always know what\'s working.' },
             ].map((item) => (
               <div key={item.step} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm text-center">
                 <p className="text-5xl font-bold text-orange-100">{item.step}</p>
@@ -715,6 +740,43 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-16 lg:px-8">
+          <h2 className="text-3xl font-bold text-slate-900 text-center">Common questions</h2>
+          <p className="mt-3 text-center text-slate-500 text-lg">Everything you need to know before signing up.</p>
+          <div className="mt-10 space-y-4">
+            {[
+              {
+                q: 'What if I get no customers from Kuidago?',
+                a: 'On the Growth plan you only pay per redemption — so if no customers show up, you pay nothing. The free launch period also means there\'s zero financial risk to getting started.',
+              },
+              {
+                q: 'How does the redemption code work?',
+                a: 'When a customer claims your deal on the app they get a unique code. They show that code to your staff when ordering — no app install or hardware needed on your end.',
+              },
+              {
+                q: 'Do I need to install anything or change my POS?',
+                a: 'No. Kuidago works completely independently of your existing setup. Your staff just verifies the code shown on the customer\'s phone — that\'s it.',
+              },
+              {
+                q: 'Can I cancel or change my deal anytime?',
+                a: 'Yes, always. You can pause, edit, or remove your deal at any time with no penalty. You\'re never locked in.',
+              },
+              {
+                q: 'How do I control how many customers come in?',
+                a: 'You set the exact number of available spots per deal. Once that limit is hit the deal shows as sold out automatically — so you\'re never overwhelmed.',
+              },
+            ].map((item) => (
+              <div key={item.q} className="rounded-2xl border border-slate-200 bg-slate-50 px-6 py-5">
+                <p className="font-semibold text-slate-900">{item.q}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Partner form */}
       <section id="partner-form" className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
         <div className="rounded-[32px] bg-slate-900 px-8 py-14 text-white shadow-2xl shadow-slate-300">
@@ -782,15 +844,21 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-lg font-bold text-slate-900">Kuidago</p>
               <p className="mt-1 text-sm text-slate-500">Serving Celina · Prosper · McKinney</p>
+              <a href="mailto:kuidago.co@gmail.com" className="mt-2 block text-sm text-orange-600 hover:underline">kuidago.co@gmail.com</a>
             </div>
-            <div className="flex flex-col items-center gap-2 sm:items-end">
-              <a href="mailto:kuidago.co@gmail.com" className="text-sm text-orange-600 hover:underline">kuidago.co@gmail.com</a>
-              <p className="text-xs text-slate-400">© {new Date().getFullYear()} Kuidago. All rights reserved.</p>
+            <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-slate-500">
+              <a href="#partner-form" className="hover:text-orange-600 transition">Join as partner</a>
+              <a href="#" className="hover:text-orange-600 transition">How it works</a>
+              <a href="#" className="hover:text-orange-600 transition">Pricing</a>
+              <a href="#" className="hover:text-orange-600 transition">FAQ</a>
             </div>
+          </div>
+          <div className="mt-8 border-t border-slate-200 pt-6">
+            <p className="text-xs text-slate-400 text-center">© {new Date().getFullYear()} Kuidago. All rights reserved. · Celina, TX</p>
           </div>
         </div>
       </footer>
