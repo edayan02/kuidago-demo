@@ -610,25 +610,25 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900">Simple, transparent pricing</h2>
-            <p className="mt-3 text-lg text-slate-500">Free during our launch period. No surprises after.</p>
+            <p className="mt-3 text-lg text-slate-500">Start free. Pay only when it works. Upgrade when you're ready.</p>
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
 
-            {/* Launch plan */}
+            {/* Tier 1 — Free launch */}
             <div className="relative rounded-3xl border-2 border-orange-400 bg-white p-8 shadow-md">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="rounded-full bg-orange-500 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow">
                   Now open · First 10 only
                 </span>
               </div>
-              <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-orange-600">Launch period</p>
+              <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-orange-600">Launch</p>
               <p className="mt-2 text-5xl font-bold text-slate-900">Free</p>
               <p className="mt-1 text-sm text-slate-500">No credit card required</p>
               <ul className="mt-6 space-y-3 text-sm text-slate-600">
                 {[
                   'Unlimited deal listings',
-                  'Featured placement in launch promotion',
+                  'Featured in launch promotion',
                   'Full access to customer app',
                   'No commitment — opt out anytime',
                 ].map((item) => (
@@ -643,39 +643,57 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               </a>
             </div>
 
-            {/* Pay per customer */}
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">After launch</p>
-              <p className="mt-2 text-5xl font-bold text-slate-900">$1.99</p>
-              <p className="mt-1 text-sm text-slate-500">per customer redemption</p>
-              <ul className="mt-6 space-y-3 text-sm text-slate-600">
+            {/* Tier 2 — Pay per redemption with cap */}
+            <div className="relative rounded-3xl border-2 border-slate-900 bg-slate-900 p-8 shadow-xl">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                <span className="rounded-full bg-slate-900 border border-slate-700 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow">
+                  Most popular
+                </span>
+              </div>
+              <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-orange-400">Growth</p>
+              <div className="mt-2 flex items-end gap-2">
+                <p className="text-5xl font-bold text-white">$2.99</p>
+                <p className="mb-1.5 text-sm text-slate-400">/ redemption</p>
+              </div>
+              <p className="mt-1 text-sm text-slate-400">Capped at $99/month max</p>
+
+              {/* Inline math callout */}
+              <div className="mt-4 rounded-2xl bg-slate-800 px-4 py-3">
+                <p className="text-xs text-slate-400">At just <span className="font-semibold text-orange-400">34 customers/month</span> you hit the cap — after that every extra customer is free.</p>
+              </div>
+
+              <ul className="mt-5 space-y-3 text-sm text-slate-300">
                 {[
-                  'Pay only when it works',
-                  'No monthly commitment',
+                  'Pay only when customers show up',
+                  'Never pay more than $99/month',
                   'Full access to customer app',
-                  'Cancel or pause anytime',
+                  'Cancel anytime, no questions',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-emerald-500">✓</span>
+                    <span className="mt-0.5 text-emerald-400">✓</span>
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-medium text-slate-500">
+              <p className="mt-8 rounded-2xl bg-slate-800 px-6 py-3 text-center text-sm font-medium text-slate-400">
                 Available after launch period
               </p>
             </div>
 
-            {/* Monthly flat fee */}
+            {/* Tier 3 — Premium */}
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">After launch</p>
-              <p className="mt-2 text-5xl font-bold text-slate-900">$49.99</p>
-              <p className="mt-1 text-sm text-slate-500">flat monthly fee</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Premium</p>
+              <div className="mt-2 flex items-end gap-2">
+                <p className="text-5xl font-bold text-slate-900">$149</p>
+                <p className="mb-1.5 text-sm text-slate-500">/ month</p>
+              </div>
+              <p className="mt-1 text-sm text-slate-500">Unlimited redemptions + top placement</p>
               <ul className="mt-6 space-y-3 text-sm text-slate-600">
                 {[
+                  'Your deal appears first in every search',
                   'Unlimited customer redemptions',
-                  'Best value at 25+ customers/month',
-                  'Full access to customer app',
+                  '"Featured" badge on all your deals',
+                  'Priority support & onboarding',
                   'Cancel anytime',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
@@ -692,7 +710,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
           </div>
 
           <p className="mt-8 text-center text-sm text-slate-400">
-            During the launch period all early partners join completely free. After launch you choose the plan that works best for you — or opt out with no questions asked.
+            All early launch partners join completely free. After launch, choose the plan that fits — or opt out with no questions asked.
           </p>
         </div>
       </section>
