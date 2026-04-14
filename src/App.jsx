@@ -513,7 +513,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               </div>
               <p className="text-sm text-slate-500"><span className="font-semibold text-slate-900">3 restaurants</span> already signed up in Celina · Prosper · McKinney</p>
             </div>
-            {/* CTAs — primary is Join, secondary is View app */}
+            {/* CTAs */}
             <div className="mt-6 flex flex-col gap-4 sm:flex-row">
               <a href="#partner-form" className="rounded-2xl bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700 transition text-center">
                 Join as early partner — it's free
@@ -521,20 +521,6 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
               <button onClick={onOpenMarketplace} className="rounded-2xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50 transition text-center">
                 See the customer app
               </button>
-            </div>
-            {/* Email capture for non-ready visitors */}
-            <div className="mt-5">
-              <p className="text-xs text-slate-400 mb-2">Not a restaurant owner? Get notified when we launch near you.</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-orange-300 max-w-[220px]"
-                />
-                <button className="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition whitespace-nowrap">
-                  Notify me
-                </button>
-              </div>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
@@ -609,16 +595,15 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
       </section>
 
       {/* How it works */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section id="how-it-works" className="border-b border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <h2 className="text-3xl font-bold text-slate-900 text-center">How it works</h2>
-          <p className="mt-3 text-center text-slate-500 text-lg">From setup to customers walking in — in minutes.</p>
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
+          <p className="mt-3 text-center text-slate-500 text-lg">Three simple steps from setup to customers walking in.</p>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
               { step: '01', title: 'You create a deal', text: 'Set your offer, time window, and how many spots are available. We handle the rest.' },
               { step: '02', title: 'Customers discover it', text: 'People nearby search by ZIP, distance, and cuisine type and find your offer instantly.' },
-              { step: '03', title: 'They walk in', text: 'Customers redeem a unique code at your restaurant during the deal window.' },
-              { step: '04', title: 'You track results', text: 'Your simple dashboard shows redemptions in real time so you always know what\'s working.' },
+              { step: '03', title: 'They walk in', text: 'Customers redeem a unique code at your restaurant during the deal window. More traffic, less guesswork.' },
             ].map((item) => (
               <div key={item.step} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm text-center">
                 <p className="text-5xl font-bold text-orange-100">{item.step}</p>
@@ -631,7 +616,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
       </section>
 
       {/* Pricing section */}
-      <section className="border-b border-slate-200 bg-white">
+      <section id="pricing" className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900">Simple, transparent pricing</h2>
@@ -741,7 +726,7 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
       </section>
 
       {/* FAQ */}
-      <section className="border-b border-slate-200 bg-white">
+      <section id="faq" className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-3xl px-6 py-16 lg:px-8">
           <h2 className="text-3xl font-bold text-slate-900 text-center">Common questions</h2>
           <p className="mt-3 text-center text-slate-500 text-lg">Everything you need to know before signing up.</p>
@@ -852,9 +837,9 @@ function PartnerLanding({ deals, onOpenMarketplace }) {
             </div>
             <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-slate-500">
               <a href="#partner-form" className="hover:text-orange-600 transition">Join as partner</a>
-              <a href="#" className="hover:text-orange-600 transition">How it works</a>
-              <a href="#" className="hover:text-orange-600 transition">Pricing</a>
-              <a href="#" className="hover:text-orange-600 transition">FAQ</a>
+              <a href="#how-it-works" className="hover:text-orange-600 transition">How it works</a>
+              <a href="#pricing" className="hover:text-orange-600 transition">Pricing</a>
+              <a href="#faq" className="hover:text-orange-600 transition">FAQ</a>
             </div>
           </div>
           <div className="mt-8 border-t border-slate-200 pt-6">
